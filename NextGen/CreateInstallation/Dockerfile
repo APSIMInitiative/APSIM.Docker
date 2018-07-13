@@ -11,6 +11,6 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org
 	choco install innosetup;
 
 # run.bat is the script which will be run inside the container.
-ADD Run.bat C:\Workspace\Run.bat
+COPY Run.bat C:/Workspace
 
 ENTRYPOINT ["C:\Workspace\Run.bat"]
