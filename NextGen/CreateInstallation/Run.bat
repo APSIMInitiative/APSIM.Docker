@@ -6,19 +6,9 @@ if "%1"=="" (
     exit 1
 )
 
-cd
-
-rem Get all files from GitHub for specific commit SHA
-git clone https://github.com/APSIMInitiative/ApsimX APSIMx
-cd ApsimX
-git reset --hard %1
-
-rem Create installs
-echo.
 echo ########### Creating documentation
-cd Documentation
+cd C:\WorkspaceDocumentation
 call GenerateDocumentation.bat
-IF ERRORLEVEL 1 GOTO END
 
 echo.
 echo ########### Creating Windows installation
