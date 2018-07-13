@@ -1,46 +1,39 @@
 @echo off
-if not exist C:\bin (
-    echo C:\bin does not exist. This directory must be mounted via the docker run -v switch.
-    exit 1
-)
+
 rem Check if first argument was provided.
 if "%1"=="" (
-    echo Error: No URL provided.
+    echo Error: No commit SHA provided. Should be first argument
     exit 1
 )
 
+cd
+
 rem Get all files from GitHub for specific commit SHA
-git clone https://github.com/APSIMInitiative/ApsimX C:\APSIMx
-cd \ApsimX
+git clone https://github.com/APSIMInitiative/ApsimX APSIMx
+cd ApsimX
 git reset --hard %1
 
 rem Create installs
 echo.
 echo ########### Creating documentation
-cd \ApsimX\Documentation
+cd Documentation
 call GenerateDocumentation.bat
 IF ERRORLEVEL 1 GOTO END
 
 echo.
 echo ########### Creating Windows installation
-cd \ApsimX\Setup
+cd ..\Setup
 "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" apsimx.iss
-IF ERRORLEVEL 1 GOTO END
 
 echo ########### Creating Debian package
-if exist \ApsimX\Setup\Linux\BuildDeb.bat (
-    cd \ApsimX\Setup\Linux
-    call BuildDeb.bat
-)
-IF ERRORLEVEL 1 GOTO END
+cd Linux
+call BuildDeb.bat
 
 echo ########### Creating Mac OS X installation
-if exist "\ApsimX\Setup\OS X\BuildMacDist.bat" (
-cd "\ApsimX\Setup\OS X"
+cd "..\OS X"
 call BuildMacDist.bat
-cd ..
-)
-IF ERRORLEVEL 1 GOTO END
+
+
 
 rem echo ########### Uploading installations
 rem cd "C:\Jenkins\workspace\1. GitHub pull request\ApsimX\Setup"
