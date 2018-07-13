@@ -20,15 +20,3 @@ copy /y %apsimx%\DeploymentSupport\Windows\Bin64\* %apsimx%\Bin\
 
 echo Building ApsimX.
 msbuild /m %apsimx%\ApsimX.sln
-
-rem Copying the binaries will modify errorlevel, so we need to save its value first.
-set level=%errorlevel%
-
-if %errorlevel% neq 0 (
-	echo Build failed.
-	exit %errorlevel%
-)
-
-copy /y %apsimx%\Bin\* C:\bin\
-echo Build succeeded.
-exit %level%
