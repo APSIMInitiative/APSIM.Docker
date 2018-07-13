@@ -7,13 +7,13 @@ if "%1"=="" (
 )
 
 echo ########### Creating documentation
-cd C:\WorkspaceDocumentation
+cd C:\Workspace\Documentation
 call GenerateDocumentation.bat
 
 echo.
 echo ########### Creating Windows installation
 cd ..\Setup
-"C:\Program Files (x86)\Inno Setup 5\ISCC.exe" apsimx.iss
+ISCC.exe apsimx.iss
 
 echo ########### Creating Debian package
 cd Linux
