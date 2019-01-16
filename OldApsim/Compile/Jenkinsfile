@@ -1,0 +1,25 @@
+pipeline {
+	agent none
+    stages {
+		stage('BuildAndRun') {
+			agent {
+				label "windows && docker"
+			}
+			steps {
+				bat '''
+					@echo off
+					if not exist APSIMClassic (
+						git config --system core.longpaths true
+						git clone https://github.com/APSIMInitiative/APSIMClassic APSIMClassic
+					)
+					docker build -m 12g -t buildapsim %~dp0
+					if errorlevel 1 (
+						echo Encountered an error while building docker container. Exiting...
+						exit 1
+					)
+					docker run -m 12g buildapsim
+				'''
+			}
+		}
+    }
+}
