@@ -19,7 +19,7 @@ echo Compiling the JobScheduler
 msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln"
 
 rem ----- Run the job scheduler.
-JobScheduler Build\BuildAll.xml Target=BuildAll
+JobScheduler Build\BuildAll.xml Target=BobBuildAndRun
 
 rem ----- Change back to Build directory
 popd
