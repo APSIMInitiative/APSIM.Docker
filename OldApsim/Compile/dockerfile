@@ -14,14 +14,14 @@ FROM microsoft/dotnet-framework-build:4.7.1
 SHELL ["powershell", "-Command"]
 
 RUN Install-PackageProvider -Name Chocolatey            -Force -RequiredVersion 2.8.5.130;                                 \
-    Install-Package         -Name SlikSVN               -Force -RequiredVersion 1.8.5.20140421;                            \
 	Install-Package         -Name 7Zip                  -Force -RequiredVersion 18.1;                                      \
     Install-PackageProvider -Name ChocolateyGet         -Force;									                           
 	
 RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex; 		\
     choco feature disable –name showDownloadProgress;                                        								\
 	choco feature enable -n allowGlobalConfirmation;                                         								\
-    choco install mingw --x86 --force --params "/exception:sjlj";
+    choco install mingw --x86 --force --params "/exception:sjlj";															\
+	choco install git.portable;
 	
 # Now install some missing build tools
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/vs_buildtools.exe
@@ -31,7 +31,7 @@ RUN Start-Process -FilePath 'vs_BuildTools.exe' -Wait -ArgumentList '--quiet', '
 # Copy files to PATH and create a make.exe so that build script will find it.   
 RUN cp C:\ProgramData\chocolatey\tools\7z.exe C:\ProgramData\chocolatey\bin\7z.exe;    										\
     cp C:\ProgramData\chocolatey\tools\7z.dll C:\ProgramData\chocolatey\bin\7z.dll;    										\
-    cp C:\tools\mingw32\bin\mingw32-make.exe C:\tools\mingw32\bin\make.exe;
+    cp C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin\mingw32-make.exe C:\ProgramData\chocolatey\bin\make.exe;
 
 # Get the BOB build libraries that contain libxml, cppunit etc. and extract
 ADD http://bob.apsim.info/files/BuildLibraries.7z /BuildLibraries.7z
@@ -40,9 +40,11 @@ RUN 7z x /BuildLibraries.7z -o/
 # Add in cotton password file
 ADD http://bob.apsim.info/files/CottonPassword.txt /CottonPassword.txt
 
+RUN git clone https://github.com/APSIMInitiative/APSIMClassic C:\APSIM
 # Add in a script to handle the clone/compile process
 COPY compile.bat /compile.bat
 
+COPY ModifiedFiles /ModifiedFiles
 ENTRYPOINT ["compile.bat"]
 
 RUN rm c:\BuildLibraries.7z; 																								\
