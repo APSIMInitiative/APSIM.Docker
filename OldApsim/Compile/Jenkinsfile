@@ -8,9 +8,11 @@ pipeline {
 			steps {
 				bat '''
 					@echo off
-					echo dir=%cd%
-					echo jenkinsfile location=%~dp0
-					docker build -m 12g -t buildapsim %~dp0
+					if not exist Docker (
+						git clone https://github.com/APSIMInitiative/Docker Docker
+					)
+					git -C Docker pull
+					docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
 					if errorlevel 1 (
 						echo Encountered an error while building docker container. Exiting...
 						exit 1
