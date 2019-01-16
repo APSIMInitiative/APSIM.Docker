@@ -3,7 +3,7 @@ pipeline {
     stages {
 		stage('BuildAndRun') {
 			agent {
-				label "windows && docker"
+				label "windows && docker && heavyweight"
 			}
 			steps {
 				bat '''
