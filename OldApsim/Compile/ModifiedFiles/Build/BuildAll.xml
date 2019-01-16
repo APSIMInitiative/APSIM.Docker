@@ -882,7 +882,12 @@
          <CommandLine>%APSIM%/Model/Build/RunAllUnitTests.bat</CommandLine>
          <CommandLineUnix>/bin/true</CommandLineUnix>
       </Job>
+	  <Job name="RestoreTestPackages">
+		<WorkingDirectory>%APSIM%/Model/Tests</WorkingDirectory>
+		<CommandLine>nuget restore -verbosity quiet</CommandLine>
+	  </Job>
       <Job name="Compile Tests">
+	     <DependsOn>RestoreTestPackages</DependsOn>
          <WorkingDirectory>%APSIM%/Model/Tests</WorkingDirectory>
          <CommandLine>make</CommandLine>
       </Job>
