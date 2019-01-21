@@ -14,7 +14,7 @@ if exist C:\ModifiedFiles\ (
 	copy /y C:\ModifiedFiles\Build\* C:\APSIM\Model\Build\
 	copy /y C:\ModifiedFiles\Makefile C:\APSIM\Model\Cotton\
 )
-
+reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy /F
 cd C:\APSIM
 git fetch origin +refs/pull/*:refs/remotes/origin/pr/*
 git checkout %sha1%
