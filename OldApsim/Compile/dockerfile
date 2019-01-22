@@ -64,5 +64,6 @@ RUN cmd /c start /wait 7z_install_x64.msi /quiet /passive /qn
 ADD https://www.7-zip.org/a/7z1806.msi /7z_install_x86.msi
 RUN cmd /c start /wait 7z_install_x86.msi /quiet /passive /qn
 
+RUN choco install curl;
 
 ENTRYPOINT ["compile.bat"]

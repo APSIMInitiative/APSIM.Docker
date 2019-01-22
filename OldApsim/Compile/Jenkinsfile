@@ -28,7 +28,7 @@ pipeline {
 						echo Encountered an error while building docker container. Exiting...
 						exit 1
 					)
-					docker run -m 12g -e "sha1=%ghprbActualCommit%" -e "bobpass=%BOB_CREDS_PSW%" buildapsim
+					docker run -m 12g -e "sha1=%ghprbActualCommit%" -e BOB_CREDS buildapsim
 				'''
 			}
         }
