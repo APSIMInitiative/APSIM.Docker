@@ -41,6 +41,7 @@ RUN 7z x /BuildLibraries.7z -o/
 ADD http://bob.apsim.info/files/CottonPassword.txt /CottonPassword.txt
 
 RUN git clone https://github.com/APSIMInitiative/APSIMClassic C:\APSIM
+
 # Add in a script to handle the clone/compile process
 COPY compile.bat /compile.bat
 
@@ -48,14 +49,18 @@ COPY ModifiedFiles /ModifiedFiles
 
 COPY SignCsiro.bat /CsiroSign.bat
 
-ENTRYPOINT ["compile.bat"]
-
-RUN rm c:\BuildLibraries.7z; 																								\
-    rm vs_buildtools.exe;
+RUN rm c:\BuildLibraries.7z; rm vs_buildtools.exe;
 
 # Install InnoSetup
 ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
 RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART
 
-ADD https://www.7-zip.org/a/7z1806-x64.msi /7z_install.msi
-RUN cmd /c start /wait 7z_install.msi /quiet /passive /qn
+# Install 64-bit and 32-bit 7zip.
+ADD https://www.7-zip.org/a/7z1806-x64.msi /7z_install_x64.msi
+RUN cmd /c start /wait 7z_install_x64.msi /quiet /passive /qn
+
+ADD https://www.7-zip.org/a/7z1806.msi /7z_install_x86.msi
+RUN cmd /c start /wait 7z_install_x86.msi /quiet /passive /qn
+
+
+ENTRYPOINT ["compile.bat"]
