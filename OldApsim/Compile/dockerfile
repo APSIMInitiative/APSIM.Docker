@@ -47,7 +47,7 @@ COPY compile.bat /compile.bat
 
 COPY ModifiedFiles /ModifiedFiles
 
-COPY SignCsiro.bat /SignCsiro.bat
+COPY SignCsiro.bat /CsiroSign.bat
 
 ENTRYPOINT ["compile.bat"]
 
