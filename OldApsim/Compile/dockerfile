@@ -21,8 +21,7 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org
     choco feature disable –name showDownloadProgress;                                        								\
 	choco feature enable -n allowGlobalConfirmation;                                         								\
     choco install mingw --x86 --force --params "/exception:sjlj";															\
-	choco install git.portable;                                                                                        \
-	choco install innosetup;
+	choco install git.portable;
 	
 # Now install some missing build tools
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/vs_buildtools.exe
@@ -58,3 +57,7 @@ RUN rm c:\BuildLibraries.7z; 																								\
 # which was extracted from the Windows 10 SDK installer (which is ~300MiB).
 ADD http://bob.apsim.info/files/signToolInstaller.msi /signToolInstaller.msi
 RUN start /wait C:\signToolInstaller.msi /quiet /passive /qn
+
+# Install InnoSetup
+ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
+RUN start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART 
