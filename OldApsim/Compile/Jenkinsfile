@@ -2,24 +2,28 @@ pipeline {
     agent none
     stages {
         stage('BuildAndRun') {
-        agent {
-                label "windows && docker && heavyweight"
-        }
-            steps {
-                bat '''
-                    @echo off
-                    if not exist Docker (
-                        git clone https://github.com/APSIMInitiative/Docker Docker
-                    )
-                    git -C Docker pull
-                    docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
-                    if errorlevel 1 (
-                        echo Encountered an error while building docker container. Exiting...
-                        exit 1
-                    )
-                    docker run -m 12g -e "sha1=%ghprbActualCommit%" buildapsim
-                '''
-            }
+			agent {
+					label "windows && docker && heavyweight"
+			}
+			
+			environment {
+				BOB_CREDS = credentials('bob')
+			}
+			steps {
+				bat '''
+					@echo off
+					if not exist Docker (
+						git clone https://github.com/APSIMInitiative/Docker Docker
+					)
+					git -C Docker pull
+					docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
+					if errorlevel 1 (
+						echo Encountered an error while building docker container. Exiting...
+						exit 1
+					)
+					docker run -m 12g -e "sha1=%ghprbActualCommit%" -e "bobpass=%BOB_CREDS_PSW%" buildapsim
+				'''
+			}
         }
     }
 }
