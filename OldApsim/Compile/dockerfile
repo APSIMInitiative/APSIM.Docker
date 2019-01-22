@@ -55,4 +55,4 @@ RUN rm c:\BuildLibraries.7z; 																								\
 
 # Install InnoSetup
 ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
-RUN start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART 
+RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART 
