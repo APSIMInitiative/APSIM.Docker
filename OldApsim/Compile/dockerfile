@@ -53,3 +53,8 @@ ENTRYPOINT ["compile.bat"]
 
 RUN rm c:\BuildLibraries.7z; 																								\
     rm vs_buildtools.exe;
+
+# We need to install signTool.exe. There is a cut-down installer on Bob,
+# which was extracted from the Windows 10 SDK installer (which is ~300MiB).
+ADD http://bob.apsim.info/files/signToolInstaller.msi /signToolInstaller.msi
+RUN start /wait C:\signToolInstaller.msi /quiet /passive /qn
