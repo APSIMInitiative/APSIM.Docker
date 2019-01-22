@@ -57,4 +57,5 @@ RUN rm c:\BuildLibraries.7z; 																								\
 ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
 RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART
 
-ADD https://www.7-zip.org/a/7z1806-x64.exe /7z_install.exe
+ADD https://www.7-zip.org/a/7z1806-x64.msi /7z_install.msi
+RUN cmd /c start /wait 7z_install.msi /quiet /passive /qn
