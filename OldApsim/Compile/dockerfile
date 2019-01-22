@@ -49,7 +49,7 @@ COPY ModifiedFiles /ModifiedFiles
 
 COPY SignCsiro.bat /CsiroSign.bat
 
-COPY C:\new-code-signer.pfx /new-code-signer.pfx
+COPY new-code-signer.pfx /new-code-signer.pfx
 
 RUN rm c:\BuildLibraries.7z; rm vs_buildtools.exe;
 

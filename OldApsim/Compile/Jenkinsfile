@@ -15,7 +15,14 @@ pipeline {
 					if not exist Docker (
 						git clone https://github.com/APSIMInitiative/Docker Docker
 					)
-					git -C Docker pull
+					pushd Docker
+					git clean -xfdq
+					git reset .
+					git checkout .
+					git checkout master
+					git pull
+					popd
+					copy /y C:\\new-code-signer.pfx Docker\\OldApsim\\Compile\\
 					docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
 					if errorlevel 1 (
 						echo Encountered an error while building docker container. Exiting...
