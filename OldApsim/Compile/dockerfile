@@ -55,4 +55,6 @@ RUN rm c:\BuildLibraries.7z; 																								\
 
 # Install InnoSetup
 ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
-RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART 
+RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART
+
+ADD https://www.7-zip.org/a/7z1806-x64.exe /7z_install.exe
