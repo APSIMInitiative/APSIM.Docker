@@ -19,11 +19,11 @@ cd %APSIM%
 git fetch origin +refs/pull/*:refs/remotes/origin/pr/*
 git checkout %sha1%
 
+rem ----- Change to Build directory
+cd %APSIM%\Model\Build
+
 rem ----- This will tell the versionstamper not to increment the revision number.
 %APSIM%\Model\cscs.exe %APSIM%\Model\Build\VersionStamper.cs Directory=%APSIM% Increment=no
-
-rem ----- Change to model directory
-cd %APSIM%\Model\Build
 
 rem ----- Set up the Visual Studio compiler tools
 call "C:\BuildTools\Common7\Tools\VsDevCmd.bat"
