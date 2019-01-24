@@ -33,6 +33,7 @@ echo Compiling the JobScheduler
 msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln" /v:m
 
 rem ----- Run the job scheduler.
+cd %APSIM%\Model
 JobScheduler Build\BuildAll.xml Target=Release
 
 rem Upload installers to Bob.
