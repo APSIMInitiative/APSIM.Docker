@@ -37,8 +37,10 @@ cd %APSIM%\Model
 JobScheduler Build\BuildAll.xml Target=Release
 
 rem Upload installers to Bob.
-@curl -s -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
-@curl -s -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
+echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
+@curl -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe
+@curl -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
 rem Create diffs and binary archive.
 %APSIM%/Model/CreateDiffZip.exe Directory=%APSIM% PatchFileName=%PatchFileName%
@@ -46,10 +48,7 @@ rem Create diffs and binary archive.
 7z a -mx=9 -mmt=on C:\%PatchFileNameShort%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
 rem Upload diffs and binary archive to Bob.
-@curl -s -u !BOB_CREDS! -T C:\%PatchFileNameShort%.buildtree.zip ftp://bob.apsim.info/Files/
-@curl -s -u !BOB_CREDS! -T C:\%PatchFileNameShort%.binaries.zip ftp://bob.apsim.info/Files/
-
-if errorlevel 1 (
-	echo Compilation failed. Exiting...
-	exit /b 1
-)
+echo Uploading C:\%PatchFileNameShort%.buildtree.zip...
+@curl -u !BOB_CREDS! -T C:\%PatchFileNameShort%.buildtree.zip ftp://bob.apsim.info/Files/
+echo Uploading C:\%PatchFileNameShort%.binaries.zip...
+@curl -u !BOB_CREDS! -T C:\%PatchFileNameShort%.binaries.zip ftp://bob.apsim.info/Files/
