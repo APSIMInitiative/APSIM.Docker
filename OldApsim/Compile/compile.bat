@@ -37,18 +37,20 @@ cd %APSIM%\Model
 JobScheduler Build\BuildAll.xml Target=Release
 
 rem Upload installers to Bob.
-echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
-@curl -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
-echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe
-@curl -u !BOB_CREDS! -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
+cd %APSIM%\Release
+dir
+echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
+@curl -u !BOB_CREDS! -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe
+@curl -u !BOB_CREDS! -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
 rem Create diffs and binary archive.
 %APSIM%/Model/CreateDiffZip.exe Directory=%APSIM% PatchFileName=%PatchFileName%
-7z -xr!.svn a -mx=7 -mmt=on C:\%PatchFileNameShort%.buildtree.zip %APSIM%
-7z a -mx=9 -mmt=on C:\%PatchFileNameShort%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
+7z -xr!.svn a -mx=7 -mmt=on C:\%sha1%.buildtree.zip %APSIM%
+7z a -mx=9 -mmt=on C:\%sha1%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
 rem Upload diffs and binary archive to Bob.
-echo Uploading C:\%PatchFileNameShort%.buildtree.zip...
-@curl -u !BOB_CREDS! -T C:\%PatchFileNameShort%.buildtree.zip ftp://bob.apsim.info/Files/
-echo Uploading C:\%PatchFileNameShort%.binaries.zip...
-@curl -u !BOB_CREDS! -T C:\%PatchFileNameShort%.binaries.zip ftp://bob.apsim.info/Files/
+echo Uploading C:\%sha1%.buildtree.zip...
+@curl -u !BOB_CREDS! -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
+echo Uploading C:\%sha1%.binaries.zip...
+@curl -u !BOB_CREDS! -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/

@@ -782,19 +782,19 @@
 	  -->
       <Job name="Create Bootleg MSI">
          <WorkingDirectory>%APSIM%/Release</WorkingDirectory>
-         <CommandLine>%APSIM%\Release\CreateInstall.bat %PatchFileNameShort%.Bootleg Bootleg</CommandLine>
+         <CommandLine>%APSIM%\Release\CreateInstall.bat %sha1%.Bootleg Bootleg</CommandLine>
          <CommandLineUnix>/bin/true</CommandLineUnix>
       </Job>
       <Job name="Create Release MSI">
          <WorkingDirectory>%APSIM%\Release</WorkingDirectory>
-         <CommandLine>%APSIM%\Release\CreateInstall.bat %PatchFileNameShort%.ApsimSetup ApsimSetup</CommandLine>
+         <CommandLine>%APSIM%\Release\CreateInstall.bat %sha1%.ApsimSetup ApsimSetup</CommandLine>
          <CommandLineUnix>/bin/true</CommandLineUnix>
       </Job>
 	  
       <Job name="Create SFX Binaries">
        <WorkingDirectory>%APSIM%/Release</WorkingDirectory>
-       <CommandLine>%APSIM%/Release/Release.bat %PatchFileNameShort%</CommandLine>
-       <CommandLineUnix>%APSIM%/Release/Release.sh %PatchFileNameShort%</CommandLineUnix>
+       <CommandLine>%APSIM%/Release/Release.bat %sha1%</CommandLine>
+       <CommandLineUnix>%APSIM%/Release/Release.sh %sha1%</CommandLineUnix>
       </Job>
    </Target>
 
