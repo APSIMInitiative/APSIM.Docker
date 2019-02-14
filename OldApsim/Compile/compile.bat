@@ -40,17 +40,17 @@ rem Upload installers to Bob.
 cd %APSIM%\Release
 dir
 echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
-@curl -u !BOB_CREDS! -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+@curl -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
 echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe
-@curl -u !BOB_CREDS! -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
+@curl -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
 rem Create diffs and binary archive.
-%APSIM%/Model/CreateDiffZip.exe Directory=%APSIM% PatchFileName=%PatchFileName%
+%APSIM%/Model/CreateDiffZip.exe Directory=%APSIM% PatchFileName=%sha1%
 7z -xr!.svn a -mx=7 -mmt=on C:\%sha1%.buildtree.zip %APSIM%
 7z a -mx=9 -mmt=on C:\%sha1%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
 rem Upload diffs and binary archive to Bob.
 echo Uploading C:\%sha1%.buildtree.zip...
-@curl -u !BOB_CREDS! -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
+@curl -u %BOB_CREDS% -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
 echo Uploading C:\%sha1%.binaries.zip...
-@curl -u !BOB_CREDS! -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/
+@curl -u %BOB_CREDS% -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/
