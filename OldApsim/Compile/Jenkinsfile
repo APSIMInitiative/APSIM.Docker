@@ -28,7 +28,7 @@ pipeline {
 						echo Encountered an error while building docker container. Exiting...
 						exit 1
 					)
-					docker run -m 12g -e sha1 -e BOB_CREDS --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+					docker run -m 12g -e "sha=%sha1%" -e BOB_CREDS --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
 				'''
 			}
         }

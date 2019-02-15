@@ -17,6 +17,9 @@ set APSIM=C:\APSIM
 cd %APSIM%
 
 git fetch origin +refs/pull/*:refs/remotes/origin/pr/*
+git show-ref -s %sha%>C:\sha1.txt
+set /p sha1=<C:\sha1.txt
+echo sha1=%sha1%
 git checkout %sha1%
 
 rem ----- Change to Build directory
