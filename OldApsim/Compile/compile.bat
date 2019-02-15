@@ -38,10 +38,9 @@ JobScheduler Build\BuildAll.xml Target=Release
 
 rem Upload installers to Bob.
 cd %APSIM%\Release
-dir
 echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
-echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe
+echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
 rem Create diffs and binary archive.
@@ -50,7 +49,7 @@ rem Create diffs and binary archive.
 7z a -mx=9 -mmt=on C:\%sha1%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
 rem Upload diffs and binary archive to Bob.
-echo Uploading C:\%sha1%.buildtree.zip...
-@curl -s -u %BOB_CREDS% -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
+echo Skipping C:\%sha1%.buildtree.zip...
+rem @curl -s -u %BOB_CREDS% -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
 echo Uploading C:\%sha1%.binaries.zip...
 @curl -s -u %BOB_CREDS% -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/
