@@ -6,7 +6,6 @@ rem but until then, we need to copy them manually.
 echo Copying modified files.
 if exist C:\ModifiedFiles\ (
 	echo Copying modified build files
-	copy /y C:\ModifiedFiles\Build\* C:\APSIM\Model\Build\
 	copy /y C:\ModifiedFiles\Makefile C:\APSIM\Model\Cotton\
 )
 
