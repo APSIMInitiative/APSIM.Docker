@@ -48,6 +48,6 @@ echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
 
 
 cd %APSIM%\Model\Build
-rename BuildAll.xml %sha1%.xml
+rename BuildAll.Output.xml %sha1%.xml
 echo Uploading %sha1%.xml...
 @curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
