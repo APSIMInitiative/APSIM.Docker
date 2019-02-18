@@ -50,9 +50,6 @@ rem Create diffs and binary archive.
 7z -xr!.svn a -mx=7 -mmt=on C:\%sha1%.buildtree.zip %APSIM%
 7z a -mx=9 -mmt=on C:\%sha1%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
-rem Upload diffs and binary archive to Bob.
-echo Skipping C:\%sha1%.buildtree.zip...
-rem @curl -s -u %BOB_CREDS% -T C:\%sha1%.buildtree.zip ftp://bob.apsim.info/Files/
 echo Uploading C:\%sha1%.binaries.zip...
 @curl -s -u %BOB_CREDS% -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/
 
