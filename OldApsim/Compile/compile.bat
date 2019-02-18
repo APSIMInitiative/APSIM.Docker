@@ -45,13 +45,7 @@ echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
 echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
-rem Create diffs and binary archive.
-%APSIM%/Model/CreateDiffZip.exe Directory=%APSIM% PatchFileName=%sha1%
-7z -xr!.svn a -mx=7 -mmt=on C:\%sha1%.buildtree.zip %APSIM%
-7z a -mx=9 -mmt=on C:\%sha1%.binaries.zip %APSIM%\Model\*.exe %APSIM%\Model\*.dll
 
-echo Uploading C:\%sha1%.binaries.zip...
-@curl -s -u %BOB_CREDS% -T C:\%sha1%.binaries.zip ftp://bob.apsim.info/Files/
 
 cd %APSIM%\Model\Build
 rename BuildAll.xml %sha1%.xml
