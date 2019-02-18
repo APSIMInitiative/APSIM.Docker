@@ -42,10 +42,20 @@ rem Upload installers to Bob.
 cd %APSIM%\Release
 echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+
 echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
+echo Directory listings:
+dir
+dir ApsimSetup
+dir Bootleg
 
+echo Uploading %sha1%.ApsimSetup.exe...
+@curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.ApsimSetup.exe ftp://bob.apsim.info/Files/
+
+echo Uplading %sha1%.Bootleg.exe...
+@curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.Bootleg.exe ftp://bob.apsim.info/Files/
 
 cd %APSIM%\Model\Build
 rename BuildAll.Output.xml %sha1%.xml
