@@ -36,7 +36,7 @@ msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln" /v:m
 
 rem ----- Run the job scheduler.
 cd %APSIM%\Model
-JobScheduler Build\BuildAll.xml Target=Release
+JobScheduler Build\BuildAll.xml Target=Jenkins
 
 rem Upload installers to Bob.
 cd %APSIM%\Release
