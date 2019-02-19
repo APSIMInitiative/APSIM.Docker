@@ -58,6 +58,6 @@ echo Uplading %sha1%.Bootleg.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.Bootleg.exe ftp://bob.apsim.info/Files/
 
 cd %APSIM%\Model\Build
-rename BuildAll.Output.xml %sha1%.xml
+rename BuildAllOutput.xml %sha1%.xml
 echo Uploading %sha1%.xml...
 @curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
