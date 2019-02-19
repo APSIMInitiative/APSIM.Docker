@@ -63,6 +63,8 @@ COPY ModifiedFiles /ModifiedFiles
 
 COPY SignCsiro.bat /CsiroSign.bat
 
+COPY dbConnect.txt /dbConnect.txt
+
 COPY new-code-signer.pfx /new-code-signer.pfx
 
 ENTRYPOINT ["compile.bat"]
