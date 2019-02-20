@@ -1,14 +1,5 @@
 @echo off
 
-rem Certain files involved in the build process have been modified to facilitate
-rem compilation in docker. These will eventually be merged into the main branch,
-rem but until then, we need to copy them manually.
-echo Copying modified files.
-if exist C:\ModifiedFiles\ (
-	echo Copying modified build files
-	copy /y C:\ModifiedFiles\Makefile C:\APSIM\Model\Cotton\
-)
-
 rem Change DateTime format inside the docker container, otherwise unit tests will fail.
 reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy /F
 
@@ -45,11 +36,6 @@ echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
 
 echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
 @curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
-
-echo Directory listings:
-dir
-dir ApsimSetup
-dir Bootleg
 
 echo Uploading %sha1%.ApsimSetup.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.ApsimSetup.exe ftp://bob.apsim.info/Files/
