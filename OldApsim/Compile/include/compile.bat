@@ -27,7 +27,7 @@ msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln" /v:m
 
 rem ----- Run the job scheduler.
 cd %APSIM%\Model
-JobScheduler Build\BuildAll.xml Target=Jenkins
+JobScheduler Build\BuildAll.xml Target=Release
 
 set err=%errorlevel%
 
