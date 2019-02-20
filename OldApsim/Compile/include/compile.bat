@@ -29,6 +29,17 @@ rem ----- Run the job scheduler.
 cd %APSIM%\Model
 JobScheduler Build\BuildAll.xml Target=Jenkins
 
+set err=%errorlevel%
+
+rem Upload output xml even if we ran into an error.
+cd %APSIM%\Model\Build
+rename BuildAllOutput.xml %sha1%.xml
+echo Uploading %sha1%.xml...
+@curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
+
+if errorlevel 1 exit /b %errorlevel%
+if %err% neq 0 exit /b %err%
+
 rem Upload installers to Bob.
 cd %APSIM%\Release
 echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
@@ -42,8 +53,3 @@ echo Uploading %sha1%.ApsimSetup.exe...
 
 echo Uplading %sha1%.Bootleg.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.Bootleg.exe ftp://bob.apsim.info/Files/
-
-cd %APSIM%\Model\Build
-rename BuildAllOutput.xml %sha1%.xml
-echo Uploading %sha1%.xml...
-@curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
