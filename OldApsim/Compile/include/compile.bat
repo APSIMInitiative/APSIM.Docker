@@ -31,13 +31,18 @@ JobScheduler Build\BuildAll.xml Target=Release
 
 set err=%errorlevel%
 
-rem Upload output xml even if we ran into an error.
+rem Upload output xml and diff zip even if we ran into an error.
 cd %APSIM%\Model\Build
 rename BuildAllOutput.xml %sha1%.xml
 echo Uploading %sha1%.xml...
 @curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
 
-if errorlevel 1 exit /b %errorlevel%
+cd %APSIM%
+if exist %sha1%.diffs.zip (
+	echo Uploading %sha1%.diffs.zip...
+	@curl -s -u %BOB_CREDS% -T %sha1%.diffs.zip ftp://bob.apsim.info/Files/
+)
+
 if %err% neq 0 exit /b %err%
 
 rem Upload installers to Bob.
