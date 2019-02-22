@@ -12,6 +12,9 @@ set /p sha1=<C:\sha1.txt
 echo sha1=%sha1%
 git checkout %sha1%
 
+rem ----- This will prevent the git hash from being inserted into the output files.
+set IncludeBuildNumberInOutSumFile=No
+
 rem ----- Change to Build directory
 cd %APSIM%\Model\Build
 
