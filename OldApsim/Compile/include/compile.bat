@@ -12,6 +12,10 @@ set /p sha1=<C:\sha1.txt
 echo sha1=%sha1%
 git checkout %sha1%
 
+rem ----- patch name is pull request ID.
+set PatchFileNameShort=ghprbPullId
+echo PatchFileNameShort=%PatchFileNameShort%
+
 rem ----- This will prevent the git hash from being inserted into the output files.
 set IncludeBuildNumberInOutSumFile=No
 
@@ -36,28 +40,28 @@ set err=%errorlevel%
 
 rem Upload output xml and diff zip even if we ran into an error.
 cd %APSIM%\Model\Build
-rename BuildAllOutput.xml %sha1%.xml
-echo Uploading %sha1%.xml...
-@curl -s -u %BOB_CREDS% -T %sha1%.xml ftp://bob.apsim.info/Files/
+rename BuildAllOutput.xml %PatchFileNameShort%.xml
+echo Uploading %PatchFileNameShort%.xml...
+@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.xml ftp://bob.apsim.info/Files/
 
 cd %APSIM%
-if exist %sha1%.diffs.zip (
-	echo Uploading %sha1%.diffs.zip...
-	@curl -s -u %BOB_CREDS% -T %sha1%.diffs.zip ftp://bob.apsim.info/Files/
+if exist %PatchFileNameShort%.diffs.zip (
+	echo Uploading %PatchFileNameShort%.diffs.zip...
+	@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://bob.apsim.info/Files/
 )
 
 if %err% neq 0 exit /b %err%
 
 rem Upload installers to Bob.
 cd %APSIM%\Release
-echo Uploading %sha1%.binaries.WINDOWS.INTEL.exe...
-@curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
+@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
 
-echo Uploading %sha1%.binaries.WINDOWS.X86_64.exe...
-@curl -s -u %BOB_CREDS% -T %sha1%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
+echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe...
+@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
 
-echo Uploading %sha1%.ApsimSetup.exe...
-@curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.ApsimSetup.exe ftp://bob.apsim.info/Files/
+echo Uploading %PatchFileNameShort%.ApsimSetup.exe...
+@curl -s -u %BOB_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://bob.apsim.info/Files/
 
-echo Uplading %sha1%.Bootleg.exe...
-@curl -s -u %BOB_CREDS% -T ApsimSetup\%sha1%.Bootleg.exe ftp://bob.apsim.info/Files/
+echo Uplading %PatchFileNameShort%.Bootleg.exe...
+@curl -s -u %BOB_CREDS% -T ApsimSetup\%PatchFileNameShort%.Bootleg.exe ftp://bob.apsim.info/Files/
