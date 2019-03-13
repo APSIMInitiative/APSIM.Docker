@@ -13,7 +13,7 @@ echo sha1=%sha1%
 git checkout %sha1%
 
 rem ----- patch name is pull request ID.
-set PatchFileNameShort=ghprbPullId
+set "PatchFileNameShort=%ghprbPullId%"
 echo PatchFileNameShort=%PatchFileNameShort%
 
 rem ----- This will prevent the git hash from being inserted into the output files.
