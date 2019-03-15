@@ -8,6 +8,8 @@ pipeline {
 			
 			environment {
 				BOB_CREDS = credentials('bob')
+				BUILD_PSW = credentials('builds-classic-password')
+				DB_CONN_PSW = credentials('db-connect-password')
 			}
 			steps {
 				bat '''
@@ -22,14 +24,7 @@ pipeline {
 					git checkout master
 					git pull
 					popd
-					copy /y C:\\new-code-signer.pfx Docker\\OldApsim\\Compile\\include\\
-					copy /y C:\\dbConnect.txt Docker\\OldApsim\\Compile\\include\\
-					docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
-					if errorlevel 1 (
-						echo Encountered an error while building docker container. Exiting...
-						exit 1
-					)
-					docker run -m 12g -e ghprbPullId -e "sha=%sha1%" -e BOB_CREDS --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+					call Docker\\OldApsim\\Compile\\jenkins.bat
 				'''
 			}
         }

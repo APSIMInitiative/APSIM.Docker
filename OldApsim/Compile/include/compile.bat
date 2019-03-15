@@ -12,14 +12,13 @@ set /p sha1=<C:\sha1.txt
 echo sha1=%sha1%
 git checkout %sha1%
 
-rem ----- patch name is pull request ID.
-set "PatchFileNameShort=%ghprbPullId%"
+rem ----- Display patch file name.
 echo PatchFileNameShort=%PatchFileNameShort%
 
 rem ----- This will prevent the git hash from being inserted into the output files.
 set IncludeBuildNumberInOutSumFile=No
 
-rem ----- Change to Build directory
+rem ----- Change to Build directory.
 cd %APSIM%\Model\Build
 
 rem ----- This will tell the versionstamper not to increment the revision number.
@@ -38,7 +37,7 @@ JobScheduler Build\BuildAll.xml Target=Release
 
 set err=%errorlevel%
 
-rem Upload output xml and diff zip even if we ran into an error.
+rem ----- Upload output xml and diff zip even if we ran into an error.
 cd %APSIM%\Model\Build
 rename BuildAllOutput.xml %PatchFileNameShort%.xml
 echo Uploading %PatchFileNameShort%.xml...
@@ -50,18 +49,27 @@ if exist %PatchFileNameShort%.diffs.zip (
 	@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://bob.apsim.info/Files/
 )
 
-if %err% neq 0 exit /b %err%
+if %err% geq 1 exit /b %err%
 
-rem Upload installers to Bob.
+
+rem ----- Upload installers to Bob.
+set err=0
 cd %APSIM%\Release
 echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
 @curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
+if errorlevel 1 set err=1
 
 echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe...
 @curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://bob.apsim.info/Files/
+if errorlevel 1 set err=1
 
 echo Uploading %PatchFileNameShort%.ApsimSetup.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://bob.apsim.info/Files/
+if errorlevel 1 set err=1
 
 echo Uplading %PatchFileNameShort%.Bootleg.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%PatchFileNameShort%.Bootleg.exe ftp://bob.apsim.info/Files/
+if errorlevel 1 set err=1
+
+if %err% geq 1 echo Error: 1 or more errors round while uploading installers.
+exit %err%
