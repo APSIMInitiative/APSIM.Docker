@@ -3,7 +3,7 @@ setlocal enableDelayedExpansion
 
 rem ----- Add this build to the builds DB.
 echo Adding build to builds DB...
-@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/AddPullRequest?PullID=!ghprbPullId!^&Password=!BUILD_PSW!^&DbConnectPassword=!DB_CONN_PSW! > temp.txt
+@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/AddPullRequest?PullID=!ghprbPullId!^&JenkinsID=!BUILD_NUMBER!^&Password=!BUILD_PSW!^&DbConnectPassword=!DB_CONN_PSW! > temp.txt
 
 if errorlevel 1 (
 	echo Error: Unable to add build to Builds DB.
