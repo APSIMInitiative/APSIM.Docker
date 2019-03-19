@@ -23,8 +23,9 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org
     choco install mingw --x86 --force --params "/exception:sjlj";															\
 	choco install git.portable;																								\
 	choco install curl;                                                                                                     \
-	choco install vcredist2010;
-	choco install nunit-console-runner
+	choco install vcredist2010;                                                                                             \
+	choco install nunit-console-runner;                                                                                     \
+	choco install r.project;
 	
 # Now install some missing build tools
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/vs_buildtools.exe
