@@ -33,7 +33,7 @@ msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln" /v:m
 
 rem ----- Run the job scheduler.
 cd %APSIM%\Model
-JobScheduler Build\BuildAll.xml Target=Release
+JobScheduler Build\BuildAll.xml Target=JenkinsRun
 
 set err=%errorlevel%
 
@@ -43,7 +43,7 @@ rename BuildAllOutput.xml %PatchFileNameShort%.xml
 echo Uploading %PatchFileNameShort%.xml...
 @curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.xml ftp://bob.apsim.info/Files/
 
-cd %APSIM%
+cd %APSIM%\Release
 if exist %PatchFileNameShort%.diffs.zip (
 	echo Uploading %PatchFileNameShort%.diffs.zip...
 	@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://bob.apsim.info/Files/
@@ -54,7 +54,6 @@ if %err% geq 1 exit /b %err%
 
 rem ----- Upload installers to Bob.
 set err=0
-cd %APSIM%\Release
 echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
 @curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://bob.apsim.info/Files/
 if errorlevel 1 set err=1
