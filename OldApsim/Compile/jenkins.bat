@@ -3,7 +3,7 @@ setlocal enableDelayedExpansion
 
 rem ----- Add this build to the builds DB.
 echo Adding build to builds DB...
-@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/AddPullRequest?PullID=!ghprbPullId!^&JenkinsID=!BUILD_NUMBER!^&Password=!BUILD_PSW!^&DbConnectPassword=!DB_CONN_PSW! > temp.txt
+@curl -sk "http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/AddPullRequest?PullID=!ghprbPullId!^&JenkinsID=!BUILD_NUMBER!^&Password=!BUILD_PSW!^&DbConnectPassword=!DB_CONN_PSW!" > temp.txt
 
 if errorlevel 1 (
 	echo Error: Unable to add build to Builds DB.
@@ -56,8 +56,8 @@ if errorlevel 1 (
 	echo Flagging build as passed... 
 	set STATUS=Pass
 )
-@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateStatus?JobID=!JOB_ID!^&Status=!STATUS!^&DbConnectPassword=!DB_CONN_PSW!
-@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateEndDateToNow?JobID=!JOB_ID!^&DbConnectPassword=!DB_CONN_PSW!
+@curl -sk "http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateStatus?JobID=!JOB_ID!^&Status=!STATUS!^&DbConnectPassword=!DB_CONN_PSW!"
+@curl -sk "http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateEndDateToNow?JobID=!JOB_ID!^&DbConnectPassword=!DB_CONN_PSW!"
 
 rem ----- If we ran into a problem while updating pass/fail status, exit with non-zero code
 if errorlevel 1 exit /b %errorlevel%
