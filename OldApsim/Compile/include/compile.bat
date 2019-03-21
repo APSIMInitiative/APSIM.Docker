@@ -43,7 +43,7 @@ rename BuildAllOutput.xml %PatchFileNameShort%.xml
 echo Uploading %PatchFileNameShort%.xml...
 @curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.xml ftp://bob.apsim.info/Files/
 
-cd %APSIM%\Release
+cd %APSIM%
 if exist %PatchFileNameShort%.diffs.zip (
 	echo Uploading %PatchFileNameShort%.diffs.zip...
 	@curl -s -u %BOB_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://bob.apsim.info/Files/
@@ -51,6 +51,7 @@ if exist %PatchFileNameShort%.diffs.zip (
 
 if %err% geq 1 exit /b %err%
 
+cd %APSIM%\Release
 
 rem ----- Upload installers to Bob.
 set err=0
