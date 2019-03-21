@@ -57,6 +57,7 @@ if errorlevel 1 (
 	set STATUS=Pass
 )
 @curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateStatus?JobID=!JOB_ID!^&Status=!STATUS!^&DbConnectPassword=!DB_CONN_PSW!
+@curl -sk http://www.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateEndDateToNow?JobID=!JOB_ID!^&DbConnectPassword=!DB_CONN_PSW!
 
 rem ----- If we ran into a problem while updating pass/fail status, exit with non-zero code
 if errorlevel 1 exit /b %errorlevel%
