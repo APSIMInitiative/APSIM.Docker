@@ -44,7 +44,7 @@ if errorlevel 1 (
 )
 
 rem ----- Run docker container.
-docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -e BOB_CREDS -e DB_CONN_PSW --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -e BOB_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
 set err=%errorlevel%
 
 rem ----- Call webservice and flag build as passed or failed.
