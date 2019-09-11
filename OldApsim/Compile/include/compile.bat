@@ -67,9 +67,5 @@ echo Uploading %PatchFileNameShort%.ApsimSetup.exe...
 @curl -s -u %BOB_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://bob.apsim.info/Files/
 if errorlevel 1 set err=1
 
-echo Uplading %PatchFileNameShort%.Bootleg.exe...
-@curl -s -u %BOB_CREDS% -T Bootleg\%PatchFileNameShort%.Bootleg.exe ftp://bob.apsim.info/Files/
-if errorlevel 1 set err=1
-
 if %err% geq 1 echo Error: 1 or more errors round while uploading installers.
 exit %err%
