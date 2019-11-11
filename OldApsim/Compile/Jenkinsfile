@@ -7,9 +7,9 @@ pipeline {
 			}
 			
 			environment {
-				BOB_CREDS = credentials('bob')
 				BUILD_PSW = credentials('builds-classic-password')
 				DB_CONN_PSW = credentials('db-connect-password')
+				APSIM_CREDS = credentials('apsim-site-creds')
 			}
 			steps {
 				bat '''
