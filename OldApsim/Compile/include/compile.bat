@@ -41,12 +41,12 @@ rem ----- Upload output xml and diff zip even if we ran into an error.
 cd %APSIM%\Model\Build
 rename BuildAllOutput.xml %PatchFileNameShort%.xml
 echo Uploading %PatchFileNameShort%.xml...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.xml ftp://apsimdev.apsim.info/APSIMClassicBuilds/
+@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.xml ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
 
 cd %APSIM%
 if exist %PatchFileNameShort%.diffs.zip (
 	echo Uploading %PatchFileNameShort%.diffs.zip...
-	@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://apsimdev.apsim.info/APSIMClassicBuilds/
+	@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
 )
 
 if %err% geq 1 exit /b %err%
@@ -56,15 +56,15 @@ cd %APSIM%\Release
 rem ----- Upload installers to Bob.
 set err=0
 echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://apsimdev.apsim.info/APSIMClassicBuilds/
+@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
 if errorlevel 1 set err=1
 
 echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://apsimdev.apsim.info/APSIMClassicBuilds/
+@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
 if errorlevel 1 set err=1
 
 echo Uploading %PatchFileNameShort%.ApsimSetup.exe...
-@curl -s -u %APSIM_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://apsimdev.apsim.info/APSIMClassicBuilds/
+@curl -s -u %APSIM_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
 if errorlevel 1 set err=1
 
 if %err% geq 1 echo Error: 1 or more errors round while uploading installers.
