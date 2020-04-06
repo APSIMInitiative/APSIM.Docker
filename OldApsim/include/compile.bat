@@ -1,5 +1,8 @@
 @echo off
 
+rem This script runs inside docker. It compiles the jobscheduler
+rem and runs the job specified by the TARGET environment variable.
+
 rem Change DateTime format inside the docker container, otherwise unit tests will fail.
 reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy /F
 
@@ -22,7 +25,7 @@ rem ----- Change to Build directory.
 cd %APSIM%\Model\Build
 
 rem ----- This will tell the versionstamper not to increment the revision number.
-%APSIM%\Model\cscs.exe %APSIM%\Model\Build\VersionStamper.cs Directory=%APSIM% Increment=no
+%APSIM%\Model\cscs.exe %APSIM%\Model\Build\VersionStamper.cs Directory=%APSIM% Increment=no RevisionNumber=%REVISION_NUMBER%
 
 rem ----- Set up the Visual Studio compiler tools
 call "C:\BuildTools\Common7\Tools\VsDevCmd.bat"
@@ -33,7 +36,7 @@ msbuild "%APSIM%\Model\JobScheduler\JobScheduler.sln" /v:m
 
 rem ----- Run the job scheduler.
 cd %APSIM%\Model
-JobScheduler Build\BuildAll.xml Target=JenkinsRun
+JobScheduler Build\BuildAll.xml Target=%TARGET%
 
 set err=%errorlevel%
 
@@ -55,17 +58,28 @@ cd %APSIM%\Release
 
 rem ----- Upload installers to Bob.
 set err=0
-echo Uploading %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+call :upload %PatchFileNameShort%.binaries.WINDOWS.INTEL.exe
 if errorlevel 1 set err=1
 
-echo Uploading %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+call :upload %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe
 if errorlevel 1 set err=1
 
-echo Uploading %PatchFileNameShort%.ApsimSetup.exe...
-@curl -s -u %APSIM_CREDS% -T ApsimSetup\%PatchFileNameShort%.ApsimSetup.exe ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+call :upload %PatchFileNameShort%.ApsimSetup.exe
 if errorlevel 1 set err=1
 
 if %err% geq 1 echo Error: 1 or more errors round while uploading installers.
 exit %err%
+
+:upload
+setlocal
+
+set "FILENAME=%1"
+if exist %FILENAME% (
+	echo Uploading %FILENAME%...
+	@curl -s -u %APSIM_CREDS% -T %FILENAME% ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+) else (
+	echo %FILENAME% does not exist. Skipping...
+)
+
+endlocal
+exit /b

@@ -10,7 +10,7 @@ if errorlevel 1 (
 	exit /b 1
 )
 
-rem ----- Read response from server.
+rem ----- Read response (Job ID) from server.
 for /F "tokens=1-6 delims==><" %%I IN (temp.txt) DO SET JOB_ID=%%K
 set RES=F
 if errorlevel 1 set RES=T 			rem if errorlevel 1
@@ -27,24 +27,10 @@ del temp.txt
 
 rem ----- Use pull request ID as patch file name.
 set "PatchFileNameShort=%ghprbPullId%"
+set TARGET=BobBuildAndRun
+set REVISION_NUMBER=0
 
-rem ----- Copy signing files
-copy /y C:\\new-code-signer.pfx Docker\\OldApsim\\Compile\\include\\>nul
-copy /y C:\\dbConnect.txt Docker\\OldApsim\\Compile\\include\\>nul
-if errorlevel 1 (
-	echo Error: Unable to copy signing files.
-	exit /b 1
-)
-
-rem ----- Build docker image
-docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
-if errorlevel 1 (
-	echo Error: Unable to build docker image.
-	exit /b 1
-)
-
-rem ----- Run docker container.
-docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -e APSIM_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+call Docker\\OldApsim\\jenkins.bat
 set err=%errorlevel%
 
 rem ----- Call webservice and flag build as passed or failed.
