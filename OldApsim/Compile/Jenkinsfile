@@ -24,7 +24,7 @@ pipeline {
 					git checkout master
 					git pull
 					popd
-					call Docker\\OldApsim\\Compile\\jenkins.bat
+					call Docker\\OldApsim\\Compile\\runPullRequest.bat
 				'''
 			}
         }
