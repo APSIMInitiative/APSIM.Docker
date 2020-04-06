@@ -20,7 +20,7 @@ rem ----- Display target job
 set TARGET
 
 rem ----- Build docker image
-docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim\\Compile
+docker build -m 12g -t buildapsim %cd%\\Docker\\OldApsim
 if errorlevel 1 (
 	echo Error: Unable to build docker image.
 	exit /b 1
