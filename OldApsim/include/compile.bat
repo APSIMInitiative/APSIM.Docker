@@ -10,8 +10,17 @@ set APSIM=C:\APSIM
 cd %APSIM%
 
 git fetch origin +refs/pull/*:refs/remotes/origin/pr/*
-git show-ref -s %sha%>C:\sha1.txt
-set /p sha1=<C:\sha1.txt
+if not defined sha (
+	if defined MERGE_COMMIT (
+		git show-ref -s %MERGE_COMMIT%>C:\sha1.txt
+		set /p sha1=<C:\sha1.txt
+		del C:\sha1.txt
+	) else (
+		echo No sha or merge commit provided. Aborting...
+		exit 1
+	)
+) else set sha1=%sha%
+
 echo sha1=%sha1%
 git checkout %sha1%
 

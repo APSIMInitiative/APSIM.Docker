@@ -29,6 +29,8 @@ rem ----- Use pull request ID as patch file name.
 set "PatchFileNameShort=%ghprbPullId%"
 set TARGET=BobBuildAndRun
 set REVISION_NUMBER=0
+set MERGE_COMMIT=%sha1%
+set sha1=
 
 call Docker\\OldApsim\\jenkins.bat
 set err=%errorlevel%
