@@ -73,8 +73,10 @@ if errorlevel 1 set err=1
 call :upload %PatchFileNameShort%.binaries.WINDOWS.X86_64.exe
 if errorlevel 1 set err=1
 
+pushd ApsimSetup
 call :upload %PatchFileNameShort%.ApsimSetup.exe
 if errorlevel 1 set err=1
+popd
 
 if %err% geq 1 echo Error: 1 or more errors round while uploading installers.
 exit %err%
