@@ -37,6 +37,22 @@ call Docker\\OldApsim\\jenkins.bat
 if errorlevel 1 exit /b 1
 
 rem ----- Update revision number for this pull request.
-echo Updating revision number for pull request #%PULL_ID% to %REVISION_NUMBER%
+echo Updating revision number for pull request #%PULL_ID% to %REVISION_NUMBER%...
 @curl -sk "http://apsimdev.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdateRevisionNumberForPR?pullRequestID=%PULL_ID%^&revisionNumber=%REVISION_NUMBER%^&DbConnectPassword=!DB_CONN_PSW!" > temp.txt
+if errorlevel 1 (
+	set err=%errorlevel%
+	echo Error setting revision number:
+	type temp.txt
+)
+
+rem ----- Update patch file name for  this pull request.
+echo Updating patch file name for pull request #%PULL_ID% to %PatchFileNameShort%...
+@curl -sk "http://apsimdev.apsim.info/APSIM.Builds.Service/BuildsClassic.svc/UpdatePatchFileName?pullRequestID=%PULL_ID%^&patchFileName=%PatchFileNameShort%^&DbConnectPassword=!DB_CONN_PSW!" > temp.txt
+if errorlevel 1 (
+	set err=%errorlevel%
+	echo Error setting patch file name:
+	type temp.txt
+)
+
 endlocal
+exit /b %err%
