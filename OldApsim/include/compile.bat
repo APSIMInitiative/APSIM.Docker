@@ -9,6 +9,7 @@ reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy
 set APSIM=C:\APSIM
 cd %APSIM%
 
+git fetch origin
 git fetch origin +refs/pull/*:refs/remotes/origin/pr/*
 if not defined sha (
 	if defined MERGE_COMMIT (
