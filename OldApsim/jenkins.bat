@@ -3,7 +3,6 @@ setlocal enableDelayedExpansion
 
 rem ----- Copy signing files
 copy /y C:\signapsimx\* Docker\OldApsim\include\
-copy /y C:\\new-code-signer.pfx Docker\\OldApsim\\include\\>nul
 copy /y C:\\dbConnect.txt Docker\\OldApsim\\include\\>nul
 if errorlevel 1 (
 	echo Error: Unable to copy signing files.
