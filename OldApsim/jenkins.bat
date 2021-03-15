@@ -27,4 +27,4 @@ if errorlevel 1 (
 )
 
 rem ----- Run docker container.
-docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -e MERGE_COMMIT -e REVISION_NUMBER -e TARGET -e APSIM_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -v "%APSIM_CERT%":C:\csiro.p12 -e MERGE_COMMIT -e REVISION_NUMBER -e TARGET -e APSIM_CERT_PWD -e APSIM_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
