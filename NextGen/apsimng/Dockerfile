@@ -17,7 +17,7 @@ RUN apt install -yq sqlite3
 COPY NetCoreBin /opt/ApsimX/NetCoreBin/
 
 # Temp hack
-RUN ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /opt/ApsimX/NetCoreBin/libsqlite3.so
+RUN ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
 
 WORKDIR /apsim
 
