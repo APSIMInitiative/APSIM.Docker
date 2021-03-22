@@ -1,14 +1,6 @@
 @echo off
 setlocal enableDelayedExpansion
 
-rem ----- Copy signing files
-copy /y C:\signapsimx\* Docker\OldApsim\include\
-copy /y C:\\dbConnect.txt Docker\\OldApsim\\include\\>nul
-if errorlevel 1 (
-	echo Error: Unable to copy signing files.
-	exit /b 1
-)
-
 rem ----- Get the target job to be run by the job scheduler
 if "%TARGET%"=="" (
 	echo Error: no target job for job scheduler specified
@@ -27,4 +19,4 @@ if errorlevel 1 (
 )
 
 rem ----- Run docker container.
-docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -e MERGE_COMMIT -e REVISION_NUMBER -e TARGET -e APSIM_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
+docker run -m 12g -e PatchFileNameShort -e "sha=%sha1%" -v "%APSIM_CERT%":C:\apsim.p12 -e MERGE_COMMIT -e REVISION_NUMBER -e TARGET -e APSIM_CERT_PWD -e APSIM_CREDS -e DB_CONN_PSW -e JOB_ID --cpu-count %NUMBER_OF_PROCESSORS% buildapsim
