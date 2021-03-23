@@ -35,8 +35,8 @@ RUN Start-Process -FilePath 'vs_BuildTools.exe' -Wait -ArgumentList '--quiet', '
 
 # Copy files to PATH and create a make.exe so that build script will find it.   
 RUN cp C:\ProgramData\chocolatey\tools\7z.exe C:\ProgramData\chocolatey\bin\7z.exe;    										\
-    cp C:\ProgramData\chocolatey\tools\7z.dll C:\ProgramData\chocolatey\bin\7z.dll;    										\
-    cp C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin\mingw32-make.exe C:\ProgramData\chocolatey\bin\make.exe;
+    cp C:\ProgramData\chocolatey\tools\7z.dll C:\ProgramData\chocolatey\bin\7z.dll
+    #cp C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin\mingw32-make.exe C:\ProgramData\chocolatey\bin\make.exe;
 
 # Get the BOB build libraries that contain libxml, cppunit etc. and extract
 ADD https://apsimdev.apsim.info/APSIMClassicFiles/BuildLibraries.7z /BuildLibraries.7z
