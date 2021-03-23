@@ -13,14 +13,14 @@
 FROM mcr.microsoft.com/dotnet/framework/sdk:4.8
 SHELL ["powershell", "-Command"]
 
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); \
-	Install-Package         -Name 7Zip                  -Force -RequiredVersion 18.1;                                      \
-    Install-PackageProvider -Name ChocolateyGet         -Force;									                           
-	
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex; 		\
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force;																		\
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;		\
+	iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'));							\
     choco feature disable –name showDownloadProgress;                                        								\
 	choco feature enable -n allowGlobalConfirmation;                                         								\
+	choco install 7zip;																										\
     choco install mingw --x86 --force --params "/exception:sjlj";															\
+	choco install make;																										\
 	choco install git.portable;																								\
 	choco install curl;                                                                                                     \
 	choco install vcredist2010;                                                                                             \
@@ -36,7 +36,6 @@ RUN Start-Process -FilePath 'vs_BuildTools.exe' -Wait -ArgumentList '--quiet', '
 # Copy files to PATH and create a make.exe so that build script will find it.   
 RUN cp C:\ProgramData\chocolatey\tools\7z.exe C:\ProgramData\chocolatey\bin\7z.exe;    										\
     cp C:\ProgramData\chocolatey\tools\7z.dll C:\ProgramData\chocolatey\bin\7z.dll
-    #cp C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin\mingw32-make.exe C:\ProgramData\chocolatey\bin\make.exe;
 
 # Get the BOB build libraries that contain libxml, cppunit etc. and extract
 ADD https://apsimdev.apsim.info/APSIMClassicFiles/BuildLibraries.7z /BuildLibraries.7z
