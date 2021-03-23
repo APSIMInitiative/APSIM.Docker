@@ -27,19 +27,16 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force;																		\
 	choco install nunit-console-runner;                                                                                     \
 	choco install r.project;																								\
 	choco install nuget.commandline;
-	
+
 # Now install some missing build tools
 ADD https://aka.ms/vs/15/release/vs_buildtools.exe C:/vs_buildtools.exe
 RUN Start-Process -FilePath 'vs_BuildTools.exe' -Wait -ArgumentList '--quiet', '--wait', '--norestart', '--nocache', '--installPath C:\BuildTools', '--add Microsoft.VisualStudio.Component.Windows10SDK.16299.Desktop', '--add Microsoft.Net.Component.4.6.1.SDK', '--add Microsoft.VisualStudio.Workload.VCTools', '--add Microsoft.VisualStudio.Component.NuGet.BuildTools', '--add Microsoft.Net.Component.4.5.TargetingPack';
-RUN rm c:\BuildLibraries.7z; rm vs_buildtools.exe;
-
-# Copy files to PATH and create a make.exe so that build script will find it.   
-RUN cp C:\ProgramData\chocolatey\tools\7z.exe C:\ProgramData\chocolatey\bin\7z.exe;    										\
-    cp C:\ProgramData\chocolatey\tools\7z.dll C:\ProgramData\chocolatey\bin\7z.dll
+RUN rm /vs_buildtools.exe;
 
 # Get the BOB build libraries that contain libxml, cppunit etc. and extract
 ADD https://apsimdev.apsim.info/APSIMClassicFiles/BuildLibraries.7z /BuildLibraries.7z
 RUN 7z x /BuildLibraries.7z -o/
+RUN rm /BuildLibraries.7z
 
 # Add in cotton password file
 ADD https://apsimdev.apsim.info/APSIMClassicFiles/CottonPassword.txt /CottonPassword.txt
@@ -48,12 +45,9 @@ ADD https://apsimdev.apsim.info/APSIMClassicFiles/CottonPassword.txt /CottonPass
 ADD http://www.jrsoftware.org/download.php/is.exe /is.exe
 RUN cmd /c start /wait is.exe /SUPPRESSMSGBOXES /VERYSILENT /LOG=is.out /NORESTART
 
-# Install 64-bit and 32-bit 7zip.
+# Install 64-bit 7zip.
 ADD https://www.7-zip.org/a/7z1806-x64.msi /7z_install_x64.msi
 RUN cmd /c start /wait 7z_install_x64.msi /quiet /passive /qn
-
-#ADD https://www.7-zip.org/a/7z1806.msi /7z_install_x86.msi
-#RUN cmd /c start /wait 7z_install_x86.msi /quiet /passive /qn
 
 COPY include/* /
 
