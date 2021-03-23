@@ -6,6 +6,8 @@ rem and runs the job specified by the TARGET environment variable.
 rem Change DateTime format inside the docker container, otherwise unit tests will fail.
 reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy /F
 
+move C:\cert\apsim.p12 C:\apsim.p12
+
 set APSIM=C:\APSIM
 git clone https://github.com/APSIMInitiative/APSIMClassic %APSIM%
 cd %APSIM%
