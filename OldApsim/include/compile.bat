@@ -7,6 +7,7 @@ rem Change DateTime format inside the docker container, otherwise unit tests wil
 reg add "HKCU\Control Panel\International" /V sShortDate /T REG_SZ /D dd/MM/yyyy /F
 
 set APSIM=C:\APSIM
+git clone https://github.com/APSIMInitiative/APSIMClassic %APSIM%
 cd %APSIM%
 
 git fetch origin
