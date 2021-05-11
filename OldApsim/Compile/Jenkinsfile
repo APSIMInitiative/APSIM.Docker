@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('BuildAndRun') {
 			agent {
-				label "windows && vm"
+				label "windows && vm && mid"
 			}
 			
 			environment {
