@@ -13,7 +13,7 @@
 
 FROM apsiminitiative/apsimng-build:latest
 
-RUN apt install -y r-base r-base-dev p7zip-full
+RUN apt update && apt install -y r-base r-base-dev p7zip-full rsync genisoimage
 
 # Install R package dependencies
 RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI"), repos = "https://cran.csiro.au/")'
