@@ -13,7 +13,12 @@
 
 FROM apsiminitiative/apsimng-build:latest
 
-RUN apt update && apt install -y r-base r-base-dev p7zip-full rsync genisoimage
+# We need rsync 3.2.3 or newer, which is currently not available in debian stable.
+RUN apt update && \
+    apt install -y r-base r-base-dev p7zip-full genisoimage && \
+    echo "deb http://deb.debian.org/debian testing main" >>/etc/apt/sources.list && \
+    apt update && \
+    apt install -y -t testing rsync
 
 # Install R package dependencies
 RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI"), repos = "https://cran.csiro.au/")'
