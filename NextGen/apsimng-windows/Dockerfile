@@ -18,10 +18,9 @@ RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
 
 RUN choco install innosetup;
 RUN choco install git;
+RUN choco install windows-sdk-10.1;
 
-RUN Invoke-WebRequest -Uri 'https://aka.ms/vs/16/release/vs_buildtools.exe' -OutFile C:/vs_buildtools.exe;
-#RUN wget -q --no-check-certificate https://aka.ms/vs/16/release/vs_buildtools.exe -O vs_buildtools.exe
-SHELL ["cmd /c"]
-RUN start /wait C:/vs_BuildTools.exe -q --wait --norestart --nocache --installPath C:\BuildTools --add Microsoft.VisualStudio.Workload.ManagedDesktopBuildTools
+SHELL ["cmd", "/c"]
+RUN setx PATH "%PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
 
-ENTRYPOINT ["C:/BuildTools/Common7/Tools/VsDevCmd.bat"]
+ENTRYPOINT ["cmd"]
