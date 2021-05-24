@@ -13,8 +13,18 @@ FROM mcr.microsoft.com/dotnet/core/runtime
 RUN apt update
 RUN apt install -yq sqlite3
 
-# Copy prebuilt assemblies into the container
-COPY NetCoreBin /opt/ApsimX/NetCoreBin/
+SHELL ["bash", "-c"]
+
+# Get latest version from website.
+RUN req=http://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVersion && \
+    version=$(curl -sS $req | sed -e 's/<[^>]*>//g') && \
+    issue=$(echo $version | cut -d'.' -f4) && \
+    url=https://apsimdev.apsim.info/ApsimXFiles/apsim-$issue.deb && \
+    inst=apsim.deb && \
+    curl -sSo "$inst" "$url" && \
+    dpkg --force-depends -i "$inst" && \
+    rm "$inst" && \
+    rm -rf /usr/local/lib/apsim/$version/{Examples,UnderReview,ApsimNG};
 
 # Temp hack
 RUN ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
@@ -22,4 +32,4 @@ RUN ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/li
 WORKDIR /apsim
 
 # Run APSIM
-ENTRYPOINT ["dotnet", "/opt/ApsimX/NetCoreBin/Models.dll"]
+ENTRYPOINT ["Models"]
