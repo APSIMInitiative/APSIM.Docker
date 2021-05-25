@@ -3,13 +3,15 @@ pipeline {
     stages {
         stage('BuildAndRun') {
 			agent {
-				label "windows && docker && heavyweight"
+				label "windows && vm && mid"
 			}
 			
 			environment {
 				BUILD_PSW = credentials('builds-classic-password')
 				DB_CONN_PSW = credentials('db-connect-password')
 				APSIM_CREDS = credentials('apsim-site-creds')
+				APSIM_CERT_PWD = credentials('apsim-cert-pwd')
+				APSIM_CERT = credentials('apsim-code-signing-cert')
 			}
 			steps {
 				bat '''
