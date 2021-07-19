@@ -11,7 +11,7 @@ FROM mcr.microsoft.com/dotnet/core/runtime
 
 # Install some packages
 RUN apt update
-RUN apt install -yq sqlite3
+RUN apt install -yq libsqlite3-dev
 
 SHELL ["bash", "-c"]
 
@@ -25,9 +25,6 @@ RUN req=http://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetLatestVers
     dpkg --force-depends -i "$inst" && \
     rm "$inst" && \
     rm -rf /usr/local/lib/apsim/$version/{Examples,UnderReview,ApsimNG};
-
-# Temp hack
-RUN ln -s /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 /usr/lib/x86_64-linux-gnu/libsqlite3.so
 
 WORKDIR /apsim
 
