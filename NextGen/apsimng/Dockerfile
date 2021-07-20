@@ -43,7 +43,7 @@ COPY --from=0 /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
 ENV PATH $PATH:/opt/apsim
 
 # Set shell to bash (best shell :)
-SHELL ["bash"]
+SHELL ["bash", "-c"]
 
 # Entrypoint is Models CLI
 ENTRYPOINT ["Models"]
