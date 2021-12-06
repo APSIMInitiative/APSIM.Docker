@@ -1,11 +1,16 @@
 # APSIM Next Generation build dependencies
 #
+# This image includes:
+#
+# - SDKs for building APSIM
+# - Dependencies for constructing APSIM installers
+#
 # To build this container:
 #    docker build -t apsiminitiative/apsimng-build .
 # To run the container, run this command from the ApsimX directory:
 #    docker run -i --rm -v "$PWD:/apsim" apsiminitiative/apsimng-build
 
-FROM apsiminitiative/apsimng:latest
+FROM apsiminitiative/apsimng-complete:latest
 
 RUN apt install -y apt-transport-https dirmngr gnupg ca-certificates wget
 
@@ -20,14 +25,25 @@ RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod
 dpkg -i packages-microsoft-prod.deb; \
 rm packages-microsoft-prod.deb
 
-# Update package repos
-RUN apt update
+# Update package repos and install build dependencies.
+# We need rsync 3.2.3 or newer, which is currently not available in debian stable.
+# cmake required to build libdmg-hfsplus
+RUN echo "deb http://deb.debian.org/debian testing main" >>/etc/apt/sources.list && \
+    apt update && \
+    apt install -y -t testing rsync && \
+    apt install -y dotnet-sdk-3.1 genisoimage cmake
 
-# Install build dependencies
-RUN apt install -y git gtk-sharp2 mono-devel dotnet-sdk-3.1
+# Manually install a cut-down version of libdmg-hfsplus, which contains only the
+# dmg tool which will compress our .dmg mac installer.
+RUN git clone https://github.com/fanquake/libdmg-hfsplus /opt/libdmg-hfsplus && \
+    cd /opt/libdmg-hfsplus && \
+    cmake . && \
+    make && \
+    mv dmg/dmg /usr/bin/dmg && \
+    cd .. && rm -rf /opt/libdmg-hfsplus
 
-# This environment variable is required for the mono builds to work
-ENV FrameworkPathOverride=/usr/lib/mono/4.7.2-api/
+# Add libdmg-hfsplus tool to PATH.
+ENV PATH="${PATH}:/opt/libdmg-hfsplus/dmg"
 
 # Opt out of microsoft's telemetry program
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1

@@ -8,19 +8,19 @@
 #    docker run -i --rm -v "$PWD:/apsim" apsiminitiative/apsimng path/to/my/file.apsimx
 
 # Build apsim in an intermediate container
-FROM mcr.microsoft.com/dotnet/sdk:3.1
+FROM mcr.microsoft.com/dotnet/sdk:3.1 as build
 
-# Builder of this image may specify an sha256 (commit hash) and version number of the build.
+# Builder of this image may specify an commit (commit hash) and version number of the build.
 # These are optional, but if set, the specified commit will be built, and stamped with the
 # version number.
-ARG sha256
+ARG commit
 ARG version
 
 RUN git clone https://github.com/APSIMInitiative/ApsimX /apsim
 WORKDIR /apsim
 
-# If sha256 variable is set, attempt to checkout the specified commit.
-RUN test -z ${sha256:+x} || (echo "Checking out $sha256..." && git checkout $sha256)
+# If commit variable is set, attempt to checkout the specified commit.
+RUN test -z ${commit:+x} || (echo "Checking out $commit..." && git checkout $commit)
 
 # If version variable is set, version stamp the build.
 RUN test -z ${version:+x} || (export apsimx=/apsim && echo "Version stamping the build..." && sed -i -e "s/0\.0\.0\.0/$version/g" "$apsimx/Models/Properties/AssemblyVersion.cs" && cp "$apsimx/Models/Properties/AssemblyVersion.cs" "$apsimx/ApsimNG/Properties/")
@@ -37,7 +37,7 @@ RUN apt update -q --silent && \
     apt install -yq libsqlite3-dev
 
 # Copy build artifacts from the intermediate container to /apsim
-COPY --from=0 /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
 
 # Add apsim to path
 ENV PATH $PATH:/opt/apsim
