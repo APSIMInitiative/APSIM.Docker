@@ -29,5 +29,3 @@ RUN apt update && \
 RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "DiceDesign"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("hol430/ApsimOnR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("SticsRPacks/CroptimizR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
-
-ENTRYPOINT ["dotnet", "/opt/ApsimX/NetCoreBin/Models.dll"]
