@@ -23,7 +23,10 @@ WORKDIR /apsim
 RUN test -z ${commit:+x} || (echo "Checking out $commit..." && git checkout $commit)
 
 # If version variable is set, version stamp the build.
-RUN test -z ${version:+x} || (export apsimx=/apsim && echo "Version stamping the build..." && sed -i -e "s/0\.0\.0\.0/$version/g" "$apsimx/Models/Properties/AssemblyVersion.cs" && cp "$apsimx/Models/Properties/AssemblyVersion.cs" "$apsimx/ApsimNG/Properties/")
+RUN export apsimx=/apsim && \
+    echo "Version stamping the build..." && \
+    sed -i -e "s/0\.0\.0\.0/$version/g" "$apsimx/Models/Properties/AssemblyVersion.cs" && \
+    cp "$apsimx/Models/Properties/AssemblyVersion.cs" "$apsimx/ApsimNG/Properties/"
 
 # Build apsim.
 RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-contained /apsim/Models/Models.csproj
