@@ -20,13 +20,10 @@ RUN git clone https://github.com/APSIMInitiative/ApsimX /apsim
 WORKDIR /apsim
 
 # If commit variable is set, attempt to checkout the specified commit.
-RUN test -z ${commit:+x} || (echo "Checking out $commit..." && git checkout $commit)
+RUN echo commit=$commit && git checkout $commit
 
 # If version variable is set, version stamp the build.
-RUN export apsimx=/apsim && \
-    echo "Version stamping the build..." && \
-    sed -i -e "s/0\.0\.0\.0/$version/g" "$apsimx/Models/Properties/AssemblyVersion.cs" && \
-    cp "$apsimx/Models/Properties/AssemblyVersion.cs" "$apsimx/ApsimNG/Properties/"
+RUN echo version=$version && sed -i -e "s/0\.0\.0\.0/$version/g" /apsim/Models/Properties/AssemblyVersion.cs
 
 # Build apsim.
 RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-contained /apsim/Models/Models.csproj
