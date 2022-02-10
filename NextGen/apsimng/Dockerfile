@@ -23,7 +23,9 @@ WORKDIR /apsim
 RUN echo commit=$commit && git checkout $commit
 
 # If version variable is set, version stamp the build.
-RUN echo version=$version && sed -i -e "s/0\.0\.0\.0/$version/g" /apsim/Models/Properties/AssemblyVersion.cs
+RUN echo version=$version && sed -i -e "s/0\.0\.0\.0/$version/g" \
+    /apsim/Models/Properties/AssemblyVersion.cs \
+    /apsim/APSIM.Server/Properties/AssemblyVersion.cs
 
 # Build apsim.
 RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-contained /apsim/Models/Models.csproj
