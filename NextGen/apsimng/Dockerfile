@@ -68,3 +68,18 @@ SHELL ["bash", "-c"]
 
 # Entrypoint is Models CLI
 ENTRYPOINT ["Models"]
+
+
+# Build the server in another intermediate image
+FROM build as build-server
+
+RUN dotnet publish -c Release -r linux-x64 --no-self-contained /apsim/APSIM.Server/APSIM.Server.csproj
+
+
+# Server image uses apsimng as base image
+FROM apsimng as apsimng-server
+
+# Copy build artifacts from the intermediate container to /opt/apsim
+COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+
+ENTRYPOINT ["apsim-server"]
