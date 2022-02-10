@@ -30,7 +30,28 @@ RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-c
 
 
 # The actual image is based on dotnet/runtime.
-FROM mcr.microsoft.com/dotnet/runtime:3.1
+FROM mcr.microsoft.com/dotnet/runtime:3.1 as apsimng
+
+# Install sqlite3
+RUN apt update -q --silent && \
+    apt install -yq libsqlite3-dev
+
+# Copy build artifacts from the intermediate container to /apsim
+COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+
+# Add apsim to path
+ENV PATH $PATH:/opt/apsim
+
+# Set shell to bash (best shell :)
+SHELL ["bash", "-c"]
+
+# Entrypoint is Models CLI
+ENTRYPOINT ["Models"]
+
+
+# Repeat the same steps using apsim-r as the base image, in order to build
+# apsimng-complete.
+FROM apsiminitiative/apsimng-r:latest as apsimng-complete
 
 # Install sqlite3
 RUN apt update -q --silent && \

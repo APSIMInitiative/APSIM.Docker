@@ -1,20 +1,17 @@
-# APSIM Next Generation full dependencies for running/building/testing.
+# R dependencies for running apsim. This image does **not** include APSIM.
 #
 # This includes:
 #
-# - Runtimes for running APSIM
 # - R packages for running optimisation/sensitivity analysis
 #
 # This does /not/ include:
 #
-# - SDKs for building APSIM
+# - APSIM
 #
 # To build this container:
-#    docker build -t apsiminitiative/apsimng-complete .
-# To run the container:
-#    docker run -it --rm --entrypoint=bash apsiminitiative/apsimng-complete
+#    docker build -t apsiminitiative/apsimng-r .
 
-FROM apsiminitiative/apsimng:latest
+FROM mcr.microsoft.com/dotnet/runtime:3.1
 
 # Install R 4.X
 RUN apt update && \
