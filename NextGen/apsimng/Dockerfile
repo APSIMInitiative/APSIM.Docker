@@ -82,6 +82,6 @@ RUN dotnet publish -c Release -r linux-x64 --no-self-contained /apsim/APSIM.Serv
 FROM apsimng as apsimng-server
 
 # Copy build artifacts from the intermediate container to /opt/apsim
-COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+COPY --from=build-server /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
 
 ENTRYPOINT ["apsim-server"]
