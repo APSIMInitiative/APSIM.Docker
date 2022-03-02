@@ -32,7 +32,7 @@ RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-c
 
 
 # The actual image is based on dotnet/runtime.
-FROM mcr.microsoft.com/dotnet/runtime:3.1 as apsimng
+FROM mcr.microsoft.com/dotnet/runtime:3.1-bullseye-slim as apsimng
 
 # Install sqlite3
 RUN apt update -q --silent && \
