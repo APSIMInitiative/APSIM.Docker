@@ -12,6 +12,7 @@ pipeline {
 				APSIM_CREDS = credentials('apsim-site-creds')
 				APSIM_CERT_PWD = credentials('apsim-cert-pwd')
 				APSIM_CERT = credentials('apsim-code-signing-cert')
+				BUILDS_JWT = credentials('builds-api-jwt')
 			}
 			steps {
 				bat '''
