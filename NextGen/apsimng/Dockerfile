@@ -32,6 +32,7 @@ RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-c
 
 
 # The actual image is based on dotnet/runtime.
+# docker build <build args> --target apsimng -t apsiminitiative/apsimng:latest .
 FROM mcr.microsoft.com/dotnet/runtime:3.1-bullseye-slim as apsimng
 
 # Install sqlite3
@@ -53,6 +54,7 @@ ENTRYPOINT ["Models"]
 
 # Repeat the same steps using apsim-r as the base image, in order to build
 # apsimng-complete.
+# docker build <build args> --target apsimng-complete -t apsiminitiative/apsimng-complete:latest .
 FROM apsiminitiative/apsimng-r:latest as apsimng-complete
 
 # Install sqlite3
@@ -79,6 +81,7 @@ RUN dotnet publish -c Release -r linux-x64 --no-self-contained /apsim/APSIM.Serv
 
 
 # Server image uses apsimng as base image
+# docker build <build args> --target apsimng-server -t apsiminitiative/apsimng-server:latest .
 FROM apsimng as apsimng-server
 
 # Copy build artifacts from the intermediate container to /opt/apsim
