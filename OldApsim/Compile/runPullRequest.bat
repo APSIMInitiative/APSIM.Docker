@@ -4,6 +4,7 @@ setlocal enableDelayedExpansion
 rem ----- Add this build to the builds DB.
 echo Adding build to builds DB...
 @curl -sX POST -H "Authorization: bearer !BUILDS_JWT!" "https://builds.apsim.info/api/oldapsim/add?pullRequestId=!ghprbPullId!^&jenkinsId=!BUILD_NUMBER!" > temp.txt
+type temp.txt
 if errorlevel 1 (
 	echo Error: Unable to add build to Builds DB.
 	exit /b 1
