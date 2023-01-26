@@ -19,10 +19,14 @@ RUN apt update && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' && \
     echo "deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/" | tee /etc/apt/sources.list.d/r-cran40.list && \
     apt update && \
-    apt install -yt bullseye-cran40 r-base r-base-dev && \
-    apt install -y p7zip-full
+    apt install -yt bullseye-cran40 r-base r-base-dev cmake && \
+    apt install -y p7zip-full libcurl4-openssl-dev libssl-dev
 
 # Install R package dependencies
-RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "DiceDesign"), repos = "https://cran.csiro.au/")'
+RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "DiceDesign", "DHARMa", "gap"), repos = "https://cran.csiro.au/")'
+
+# BayesianTools (a dependency of SticsRPacks) is not currently on cran.
+# Therefore we need to install it manually.
+RUN R -q -e 'remotes::install_github(repo = "florianhartig/BayesianTools", subdir = "BayesianTools", dependencies = T, build_vignettes = F)'
 RUN R -q -e 'remotes::install_github("hol430/ApsimOnR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("SticsRPacks/CroptimizR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
