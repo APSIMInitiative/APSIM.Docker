@@ -5,7 +5,7 @@
 # To build this container:
 #    docker build -t apsiminitiative/apsimng-windows .
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/dotnet/sdk:7.0-windowsservercore-ltsc2019
 
 SHELL ["powershell", "-Command"]
 
@@ -24,3 +24,4 @@ SHELL ["cmd", "/c"]
 RUN SETX /M PATH "%PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
 
 ENTRYPOINT ["cmd"]
+    
