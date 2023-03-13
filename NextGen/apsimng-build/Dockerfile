@@ -31,7 +31,7 @@ rm packages-microsoft-prod.deb
 RUN echo "deb http://deb.debian.org/debian testing main" >>/etc/apt/sources.list && \
     apt update && \
     apt install -y -t testing rsync && \
-    apt install -y dotnet-sdk-7.0 genisoimage cmake
+    apt install -y dotnet-sdk-6.0 genisoimage cmake
 
 # Manually install a cut-down version of libdmg-hfsplus, which contains only the
 # dmg tool which will compress our .dmg mac installer.
