@@ -28,7 +28,7 @@ RUN echo version=$version && sed -i -e "s/0\.0\.0\.0/$version/g" \
     /apsim/APSIM.Server/Properties/AssemblyVersion.cs
 
 # Build apsim.
-RUN dotnet publish --nologo -c Release -f netcoreapp3.1 -r linux-x64 --no-self-contained /apsim/Models/Models.csproj
+RUN dotnet publish --nologo -c Release -f net6.0 -r linux-x64 --no-self-contained /apsim/Models/Models.csproj
 
 
 # The actual image is based on dotnet/runtime.
@@ -40,7 +40,7 @@ RUN apt update -q --silent && \
     apt install -yq libsqlite3-dev
 
 # Copy build artifacts from the intermediate container to /apsim
-COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+COPY --from=build /apsim/bin/Release/net6.0/linux-x64/publish /opt/apsim/
 
 # Add apsim to path
 ENV PATH $PATH:/opt/apsim
@@ -62,7 +62,7 @@ RUN apt update -q --silent && \
     apt install -yq libsqlite3-dev
 
 # Copy build artifacts from the intermediate container to /apsim
-COPY --from=build /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+COPY --from=build /apsim/bin/Release/net6.0/linux-x64/publish /opt/apsim/
 
 # Add apsim to path
 ENV PATH $PATH:/opt/apsim
@@ -85,6 +85,6 @@ RUN dotnet publish -c Release -r linux-x64 --no-self-contained /apsim/APSIM.Serv
 FROM apsimng as apsimng-server
 
 # Copy build artifacts from the intermediate container to /opt/apsim
-COPY --from=build-server /apsim/bin/Release/netcoreapp3.1/linux-x64/publish /opt/apsim/
+COPY --from=build-server /apsim/bin/Release/net6.0/linux-x64/publish /opt/apsim/
 
 ENTRYPOINT ["apsim-server"]
