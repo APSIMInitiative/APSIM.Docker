@@ -8,7 +8,7 @@
 #    docker run -i --rm -v "$PWD:/apsim" apsiminitiative/apsimng path/to/my/file.apsimx
 
 # Build apsim in an intermediate container
-FROM mcr.microsoft.com/dotnet/sdk:3.1 as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 as build
 
 # Builder of this image may specify an commit (commit hash) and version number of the build.
 # These are optional, but if set, the specified commit will be built, and stamped with the

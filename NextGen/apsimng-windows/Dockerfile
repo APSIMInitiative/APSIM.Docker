@@ -3,7 +3,7 @@
 # A container for building and running APSIM Next Generation on Windows.
 #
 # To build this container:
-#    docker build -t apsiminitiative/apsimng-windows .
+#    docker build -t apsiminitiative/apsimng-build-win .
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2019
 

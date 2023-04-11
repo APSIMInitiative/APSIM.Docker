@@ -11,7 +11,7 @@
 # To build this container:
 #    docker build -t apsiminitiative/apsimng-r .
 
-FROM mcr.microsoft.com/dotnet/runtime:3.1-bullseye-slim
+FROM mcr.microsoft.com/dotnet/runtime:6.0-bullseye-slim
 
 # Install R 4.X
 RUN apt update && \
