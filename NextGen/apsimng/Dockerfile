@@ -77,7 +77,7 @@ ENTRYPOINT ["Models"]
 # Build the server in another intermediate image
 FROM build as build-server
 
-RUN dotnet publish -c Release -r linux-x64 --no-self-contained /apsim/APSIM.Server/APSIM.Server.csproj
+RUN dotnet publish -c Release -f net6.0 -r linux-x64 --no-self-contained /apsim/APSIM.Server/APSIM.Server.csproj
 
 
 # Server image uses apsimng as base image
