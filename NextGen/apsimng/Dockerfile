@@ -88,3 +88,24 @@ FROM apsimng as apsimng-server
 COPY --from=build-server /apsim/bin/Release/net6.0/linux-x64/publish /opt/apsim/
 
 ENTRYPOINT ["apsim-server"]
+
+
+# Build the GUI in another intermediate image
+FROM build as build-apsimng-gui
+
+RUN dotnet publish -c Release -f net6.0 -r linux-x64 --no-self-contained /apsim/ApsimNG/ApsimNG.csproj
+
+
+# GUI image uses apsimng as base image
+# docker build <build args> --target apsimng-gui -t apsiminitiative/apsimng-gui:latest .
+FROM apsimng as apsimng-gui
+
+# Copy build artifacts from the intermediate container to /opt/apsim
+COPY --from=build-apsimng-gui /apsim/bin/Release/net6.0/linux-x64/publish/ /opt/apsim/
+
+# Install graphical libraries.
+RUN apt update -q --silent &&                                                  \
+    apt install -yq gtk-sharp3                                                 \
+                    libgtksourceview-4-0
+
+ENTRYPOINT ["ApsimNG"]
