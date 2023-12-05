@@ -74,22 +74,6 @@ SHELL ["bash", "-c"]
 ENTRYPOINT ["Models"]
 
 
-# Build the server in another intermediate image
-FROM build as build-server
-
-RUN dotnet publish -c Release -f net6.0 -r linux-x64 --no-self-contained /apsim/APSIM.Server/APSIM.Server.csproj
-
-
-# Server image uses apsimng as base image
-# docker build <build args> --target apsimng-server -t apsiminitiative/apsimng-server:latest .
-FROM apsimng as apsimng-server
-
-# Copy build artifacts from the intermediate container to /opt/apsim
-COPY --from=build-server /apsim/bin/Release/net6.0/linux-x64/publish /opt/apsim/
-
-ENTRYPOINT ["apsim-server"]
-
-
 # Build the GUI in another intermediate image
 FROM build as build-apsimng-gui
 
