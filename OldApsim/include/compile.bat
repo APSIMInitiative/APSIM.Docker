@@ -57,12 +57,12 @@ rem ----- Upload output xml and diff zip even if we ran into an error.
 cd %APSIM%\Model\Build
 rename BuildAllOutput.xml %PatchFileNameShort%.xml
 echo Uploading %PatchFileNameShort%.xml...
-@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.xml ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.xml ftp://apsimdev.apsim.info
 
 cd %APSIM%
 if exist %PatchFileNameShort%.diffs.zip (
 	echo Uploading %PatchFileNameShort%.diffs.zip...
-	@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+	@curl -s -u %APSIM_CREDS% -T %PatchFileNameShort%.diffs.zip ftp://apsimdev.apsim.info
 )
 
 if %err% geq 1 exit /b %err%
@@ -91,7 +91,7 @@ setlocal
 set "FILENAME=%1"
 if exist %FILENAME% (
 	echo Uploading %FILENAME%...
-	@curl -s -u %APSIM_CREDS% -T %FILENAME% ftp://apsimdev.apsim.info/APSIM/APSIMClassicFiles/
+	@curl -s -u %APSIM_CREDS% -T %FILENAME% ftp://apsimdev.apsim.info
 ) else (
 	echo %FILENAME% does not exist. Skipping...
 )
