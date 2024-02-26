@@ -2,7 +2,7 @@
 
 Running APSIM through docker can simplify the setup. Docker provides a method to get the dependencies and functionality in a single digital object that runs across multiple operating systems. 
 
-After [setting up docker](https://www.docker.com/get-started/), you need to pull the APSIM image, ensure the `.apsimx` file is properly configured for you system, and run a docker container using the simulate file as input. 
+After [setting up docker](https://www.docker.com/get-started/), you need to pull the APSIM image, ensure the target `.apsimx` file is properly configured for you system, and run a docker container using the simulate file as input. If you are beginning with examples from the [ApsimX repo](https://github.com/APSIMInitiative/ApsimX), also make sure you've clone have the code locally so it can be mounted to the docker container.
 
 ## 1. Pull the APSIM Docker Image
 
@@ -13,7 +13,7 @@ Ensure docker is running. Then pull the apsimng image. You only need to do this 
 ## 2. Run an Example Simulation
 
 ```bash
-# Navigate your terminal to the ApsimX repo cloned from https://github.com/APSIMInitiative/ApsimX
+# Navigate your terminal to you copy of ApsimX (cloned from https://github.com/APSIMInitiative/ApsimX)
 cd /your/path/to/APSIMInitiative/ApsimX
 
 #To run APSIM, we launch a container (which essentially intantiates a live process from the static image)
