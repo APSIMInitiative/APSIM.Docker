@@ -5,7 +5,7 @@
 # To build this container:
 #    docker build -t apsiminitiative/apsimng-build-win .
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2019
+FROM mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore-ltsc2019
 
 SHELL ["powershell", "-Command"]
 
