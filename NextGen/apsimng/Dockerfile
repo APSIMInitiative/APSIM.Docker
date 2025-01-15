@@ -8,7 +8,7 @@
 #    docker run -i --rm -v "$PWD:/apsim" apsiminitiative/apsimng path/to/my/file.apsimx
 
 # Build apsim in an intermediate container
-FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 # Builder of this image may specify an commit (commit hash) and version number of the build.
 # These are optional, but if set, the specified commit will be built, and stamped with the
@@ -20,6 +20,8 @@ RUN git clone https://github.com/APSIMInitiative/ApsimX /apsim
 WORKDIR /apsim
 
 # If commit variable is set, attempt to checkout the specified commit.
+RUN echo commit=$commit && git remote add par456 https://github.com/par456/ApsimX.git
+RUN echo commit=$commit && git fetch --all
 RUN echo commit=$commit && git checkout $commit
 
 # If version variable is set, version stamp the build.
@@ -32,7 +34,7 @@ RUN dotnet publish --nologo -c Release -f net8.0 -r linux-x64 --no-self-containe
 
 # The actual image is based on dotnet/runtime.
 # docker build <build args> --target apsimng -t apsiminitiative/apsimng:latest .
-FROM mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim as apsimng
+FROM mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim AS apsimng
 
 # Install sqlite3
 RUN apt update -q --silent && \
@@ -42,7 +44,7 @@ RUN apt update -q --silent && \
 COPY --from=build /apsim/bin/Release/net8.0/linux-x64/publish /opt/apsim/
 
 # Add apsim to path
-ENV PATH $PATH:/opt/apsim
+ENV PATH=$PATH:/opt/apsim
 
 # Set shell to bash (best shell :)
 SHELL ["bash", "-c"]
@@ -54,7 +56,7 @@ ENTRYPOINT ["Models"]
 # Repeat the same steps using apsim-r as the base image, in order to build
 # apsimng-complete.
 # docker build <build args> --target apsimng-complete -t apsiminitiative/apsimng-complete:latest .
-FROM apsiminitiative/apsimng-r:latest as apsimng-complete
+FROM apsiminitiative/apsimng-r:latest AS apsimng-complete
 
 # Install sqlite3
 RUN apt update -q --silent && \
@@ -64,7 +66,7 @@ RUN apt update -q --silent && \
 COPY --from=build /apsim/bin/Release/net8.0/linux-x64/publish /opt/apsim/
 
 # Add apsim to path
-ENV PATH $PATH:/opt/apsim
+ENV PATH=$PATH:/opt/apsim
 
 # Set shell to bash (best shell :)
 SHELL ["bash", "-c"]
@@ -74,14 +76,14 @@ ENTRYPOINT ["Models"]
 
 
 # Build the GUI in another intermediate image
-FROM build as build-apsimng-gui
+FROM build AS build-apsimng-gui
 
 RUN dotnet publish -c Release -f net8.0 -r linux-x64 --no-self-contained /apsim/ApsimNG/ApsimNG.csproj
 
 
 # GUI image uses apsimng as base image
 # docker build <build args> --target apsimng-gui -t apsiminitiative/apsimng-gui:latest .
-FROM apsimng as apsimng-gui
+FROM apsimng AS apsimng-gui
 
 # Copy build artifacts from the intermediate container to /opt/apsim
 COPY --from=build-apsimng-gui /apsim/bin/Release/net8.0/linux-x64/publish/ /opt/apsim/
