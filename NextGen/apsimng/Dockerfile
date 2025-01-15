@@ -20,8 +20,8 @@ RUN git clone https://github.com/APSIMInitiative/ApsimX /apsim
 WORKDIR /apsim
 
 # If commit variable is set, attempt to checkout the specified commit.
-RUN echo commit=$commit && git remote add par456 https://github.com/par456/ApsimX.git
-RUN echo commit=$commit && git fetch --all
+#RUN echo commit=$commit && git remote add par456 https://github.com/par456/ApsimX.git
+#RUN echo commit=$commit && git fetch --all
 RUN echo commit=$commit && git checkout $commit
 
 # If version variable is set, version stamp the build.
