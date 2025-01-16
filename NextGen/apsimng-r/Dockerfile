@@ -20,7 +20,9 @@ RUN apt update && \
     echo "deb http://cloud.r-project.org/bin/linux/debian bookworm-cran40/" | tee /etc/apt/sources.list.d/r-cran40.list && \
     apt update && \
     apt install -yt bookworm-cran40 r-base r-base-dev cmake && \
-    apt install -y p7zip-full libcurl4-openssl-dev libssl-dev
+    apt install -y p7zip-full libcurl4-openssl-dev libssl-dev && \
+    apt install -y curl && \
+    apt install -y libxml2-dev libxslt1-dev
 
 # Install R package dependencies
 RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "DiceDesign", "DHARMa", "gap"), repos = "https://cran.csiro.au/")'
@@ -29,4 +31,5 @@ RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "Dic
 # Therefore we need to install it manually.
 RUN R -q -e 'remotes::install_github(repo = "florianhartig/BayesianTools", subdir = "BayesianTools", dependencies = T, build_vignettes = F)'
 RUN R -q -e 'remotes::install_github("hol430/ApsimOnR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
+RUN R -q -e 'remotes::install_github("SticsRPacks/SticsRPacks", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("SticsRPacks/CroptimizR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
