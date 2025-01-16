@@ -3,7 +3,7 @@
 # A container for running APSIM Next Generation.
 #
 # To build this container, run this from the ApsimX directory (after building apsim):
-#    docker build -t apsiminitiative/apsimng .
+#    docker build <build args> --target build -t build .
 # To run the container:
 #    docker run -i --rm -v "$PWD:/apsim" apsiminitiative/apsimng path/to/my/file.apsimx
 
@@ -20,8 +20,6 @@ RUN git clone https://github.com/APSIMInitiative/ApsimX /apsim
 WORKDIR /apsim
 
 # If commit variable is set, attempt to checkout the specified commit.
-#RUN echo commit=$commit && git remote add par456 https://github.com/par456/ApsimX.git
-#RUN echo commit=$commit && git fetch --all
 RUN echo commit=$commit && git checkout $commit
 
 # If version variable is set, version stamp the build.
