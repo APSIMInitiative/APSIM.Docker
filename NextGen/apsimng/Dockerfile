@@ -53,7 +53,7 @@ ENTRYPOINT ["Models"]
 
 # Repeat the same steps using apsim-r as the base image, in order to build
 # apsimng-complete.
-# docker build <build args> --target apsimng-complete -t apsiminitiative/apsimng-complete:latest .
+# docker build --build-arg version=0.0.0.0 --target apsimng-complete -t apsiminitiative/apsimng-complete:latest .
 FROM apsiminitiative/apsimng-r:latest AS apsimng-complete
 
 # Install sqlite3
