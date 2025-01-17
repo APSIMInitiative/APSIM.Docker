@@ -30,6 +30,6 @@ RUN R -q -e 'install.packages(c("remotes", "sensitivity", "RSQLite", "DBI", "Dic
 # BayesianTools (a dependency of SticsRPacks) is not currently on cran.
 # Therefore we need to install it manually.
 RUN R -q -e 'remotes::install_github(repo = "florianhartig/BayesianTools", subdir = "BayesianTools", dependencies = T, build_vignettes = F)'
-RUN R -q -e 'remotes::install_github("hol430/ApsimOnR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
+RUN R -q -e 'remotes::install_github("APSIMInitiative/ApsimOnR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("SticsRPacks/SticsRPacks", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
 RUN R -q -e 'remotes::install_github("SticsRPacks/CroptimizR", INSTALL_opts = c("--no-docs", "--no-help", "--no-html"), repos = "https://cran.csiro.au/")'
