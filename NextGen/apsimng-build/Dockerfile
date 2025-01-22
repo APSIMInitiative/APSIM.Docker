@@ -12,7 +12,9 @@
 
 FROM apsiminitiative/apsimng-complete:latest
 
-RUN apt install -y apt-transport-https dirmngr gnupg ca-certificates wget git libgdiplus
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt install -y apt-transport-https dirmngr gnupg ca-certificates wget git libgdiplus libvulkan1 osslsigncode unzip xauth xvfb
 
 # Install latest mono from their repo
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; \
@@ -46,5 +48,17 @@ ENV PATH="${PATH}:/opt/libdmg-hfsplus/dmg"
 
 # Opt out of microsoft's telemetry program
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+#Setup xvfb and wine
+RUN sed -i '/kill ".*"/a wait "$XVFBPID" >>"$ERRORFILE" 2>&1' /usr/bin/xvfb-run && \ 
+  sed -i '/^Enabled:/ s/no/yes/' /etc/apt/sources.list.d/* && \
+  apt update -y && \
+  apt install -y --no-install-recommends wine
+
+ENV DISPLAY=0.0
+
+#Copy in innosetup (windows) and unzip program
+COPY inno.zip ./
+RUN unzip -o inno.zip -d ./inno/
 
 ENTRYPOINT ["dotnet", "build", "-v", "m", "--nologo"]
