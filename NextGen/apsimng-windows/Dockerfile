@@ -1,26 +1,21 @@
-# APSIM Next Generation
-#
-# A container for building and running APSIM Next Generation on Windows.
-#
-# To build this container:
-#    docker build -t apsiminitiative/apsimng-build-win .
+FROM mcr.microsoft.com/dotnet/sdk:8.0
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022
+ENV DEBIAN_FRONTEND=noninteractive
 
-SHELL ["powershell", "-Command"]
+RUN dpkg --add-architecture i386 && \
+  apt update -y && \
+  apt install -y --no-install-recommends ca-certificates curl git libvulkan1 osslsigncode unzip wget xauth xvfb
 
-# Install chocolatey.
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
-    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; \
-    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); \
-    choco feature disable –name showDownloadProgress; \
-	choco feature enable -n allowGlobalConfirmation;
+#Setup xvfb and wine
+RUN sed -i '/kill ".*"/a wait "$XVFBPID" >>"$ERRORFILE" 2>&1' /usr/bin/xvfb-run && \ 
+  sed -i '/^Enabled:/ s/no/yes/' /etc/apt/sources.list.d/* && \
+  apt update -y && \
+  apt install -y --no-install-recommends wine wine32
 
-RUN choco install innosetup;
-RUN choco install git;
-RUN choco install windows-sdk-10.1;
+ENV DISPLAY=0.0
 
-SHELL ["cmd", "/c"]
-RUN SETX /M PATH "%PATH%;C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x64"
+#Copy in innosetup and unzip program
+COPY inno.zip ./
+RUN unzip -o inno.zip -d ./inno/
 
-ENTRYPOINT ["cmd"]
+ENTRYPOINT ["/bin/bash"]
