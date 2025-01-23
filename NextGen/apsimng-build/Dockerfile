@@ -14,7 +14,9 @@ FROM apsiminitiative/apsimng-complete:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt install -y apt-transport-https dirmngr gnupg ca-certificates wget git libgdiplus libvulkan1 osslsigncode unzip xauth xvfb
+RUN dpkg --add-architecture i386 && \
+    apt update -y && \
+    apt install -y apt-transport-https dirmngr gnupg ca-certificates wget git libgdiplus libvulkan1 osslsigncode unzip xauth xvfb
 
 # Install latest mono from their repo
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; \
@@ -50,10 +52,13 @@ ENV PATH="${PATH}:/opt/libdmg-hfsplus/dmg"
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 
 #Setup xvfb and wine
-RUN sed -i '/kill ".*"/a wait "$XVFBPID" >>"$ERRORFILE" 2>&1' /usr/bin/xvfb-run && \ 
-  sed -i '/^Enabled:/ s/no/yes/' /etc/apt/sources.list.d/* && \
-  apt update -y && \
-  apt install -y --no-install-recommends wine
+RUN mkdir -pm755 /etc/apt/keyrings && \
+    wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources
+    
+
+RUN apt update -y && \
+    apt install -y --no-install-recommends wine wine32
 
 ENV DISPLAY=0.0
 
