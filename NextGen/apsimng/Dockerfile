@@ -32,7 +32,7 @@ RUN dotnet publish --nologo -c Release -f net10.0 -r linux-x64 --no-self-contain
 
 # The actual image is based on dotnet/runtime.
 # docker build <build args> --target apsimng -t apsiminitiative/apsimng:latest .
-FROM mcr.microsoft.com/dotnet/runtime:10.0-trixie-slim AS apsimng
+FROM mcr.microsoft.com/dotnet/runtime:10.0.14-noble AS apsimng
 
 # Install sqlite3
 RUN apt update -q --silent && \

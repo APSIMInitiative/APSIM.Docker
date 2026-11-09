@@ -18,12 +18,6 @@ RUN dpkg --add-architecture i386 && \
     apt update -y && \
     apt install -y apt-transport-https dirmngr gnupg ca-certificates wget git libgdiplus libvulkan1 osslsigncode unzip xauth xvfb
 
-# Install latest mono from their repo
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF; \
-echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list; \
-apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'; \
-echo "deb http://cloud.r-project.org/bin/linux/debian trixie-cran40/" | tee /etc/apt/sources.list.d/r-cran40.list
-
 # Install microsoft's signing key
 RUN wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb; \
 dpkg -i packages-microsoft-prod.deb; \
@@ -54,7 +48,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 #Setup xvfb and wine
 RUN mkdir -pm755 /etc/apt/keyrings && \
     wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
-    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/trixie/winehq-trixie.sources
+    wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/noble/winehq-noble.sources
     
 
 RUN apt update -y && \
